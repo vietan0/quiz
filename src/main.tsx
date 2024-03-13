@@ -1,5 +1,6 @@
 import './index.css';
 
+import { NextUIProvider } from '@nextui-org/system';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
@@ -17,20 +18,16 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       { index: true, element: <Home /> },
-      {
-        path: '/quiz',
-        element: <Quiz />,
-      },
-      {
-        path: '/result',
-        element: <Result />,
-      },
+      { path: '/quiz', element: <Quiz /> },
+      { path: '/result', element: <Result /> },
     ],
   },
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <NextUIProvider>
+      <RouterProvider router={router} />
+    </NextUIProvider>
   </React.StrictMode>,
 );

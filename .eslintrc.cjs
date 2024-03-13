@@ -22,6 +22,11 @@ module.exports = {
       { blankLine: 'always', prev: '*', next: 'return' },
       {
         blankLine: 'always',
+        prev: 'import',
+        next: ['const', 'let', 'function', 'block-like', 'interface'],
+      },
+      {
+        blankLine: 'always',
         prev: ['multiline-expression', 'multiline-block-like', 'interface'],
         next: '*',
       },
