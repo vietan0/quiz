@@ -16,6 +16,7 @@
     "check": "npm-run-all -p type lint prettier test:once"
   },
   "dependencies": {
+    "@hookform/resolvers": "^3.3.4",
     "@nextui-org/input": "^2.1.17",
     "@nextui-org/select": "^2.1.21",
     "@nextui-org/system": "^2.0.15",
@@ -24,7 +25,8 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.51.0",
-    "react-router-dom": "^6.22.3"
+    "react-router-dom": "^6.22.3",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.0.3",

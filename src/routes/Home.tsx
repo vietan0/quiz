@@ -1,10 +1,12 @@
 import { DevTool } from '@hookform/devtools';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Input } from '@nextui-org/input';
 import { Select, SelectItem } from '@nextui-org/select';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { z } from 'zod';
 
 const difficulty = ['easy', 'medium', 'hard'] as const;
-const category = ['pokemons', 'games', 'history'];
+const category = ['pokemons', 'games', 'history'] as const;
 export const Nexts = () => (
   <>
     <Input
@@ -37,31 +39,37 @@ export const Nexts = () => (
   </>
 );
 
-type Inputs = {
-  questionCount: string;
-  difficulty: (typeof difficulty)[number];
-  category: string;
-};
+const formSchema = z.object({
+  questionCount: z.coerce.number().gte(5).lte(40),
+  difficulty: z.enum(difficulty, {
+    errorMap: (_issue, ctx) => {
+      if (ctx.data === '') return { message: 'Difficulty cannot be empty' };
+
+      return { message: ctx.defaultError };
+    },
+  }),
+  category: z.enum(category, {
+    errorMap: (_issue, ctx) => {
+      if (ctx.data === '') return { message: 'Category cannot be empty' };
+
+      return { message: ctx.defaultError };
+    },
+  }),
+});
+type Form = z.infer<typeof formSchema>;
 
 export default function Home() {
-  const {
-    register,
-    getValues,
-    setValue,
-    handleSubmit,
-    reset,
-    formState,
-    control,
-  } = useForm<Inputs>({
+  const { register, handleSubmit, reset, formState, control } = useForm<Form>({
     mode: 'onChange',
     defaultValues: {
-      questionCount: '5',
+      questionCount: 5,
       difficulty: 'medium',
-      category: 'cricket',
+      category: 'games',
     },
+    resolver: zodResolver(formSchema),
   });
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+  const onSubmit: SubmitHandler<Form> = (data) => console.log(data);
 
   return (
     <div>
@@ -74,10 +82,7 @@ export default function Home() {
           <input
             className="rounded-md outline outline-1"
             type="number"
-            {...register('questionCount', {
-              min: { value: 5, message: 'Gotta be at least 5' },
-              max: { value: 40, message: 'At most 40' },
-            })}
+            {...register('questionCount')}
           />
           <span>{formState.errors.questionCount?.message}</span>
         </label>
@@ -87,11 +92,7 @@ export default function Home() {
           <input
             className="rounded-md outline outline-1"
             type="text"
-            {...register('difficulty', {
-              validate: (value) =>
-                difficulty.includes(value) ||
-                'Difficulty must be either easy, medium or difficult',
-            })}
+            {...register('difficulty')}
           />
           <span>{formState.errors.difficulty?.message}</span>
         </label>
@@ -105,27 +106,12 @@ export default function Home() {
           />
           <span>{formState.errors.category?.message}</span>
         </label>
-        <pre>isValid is {JSON.stringify(formState.isValid)}</pre>
-        <button
-          onClick={() => console.log(getValues())}
-          type="button"
-          className="rounded-md px-4 py-2 outline outline-1"
-        >
-          Get Value
-        </button>
-        <button
-          onClick={() => setValue('difficulty', 'easy')}
-          type="button"
-          className="rounded-md px-4 py-2 outline outline-1"
-        >
-          Set Value
-        </button>
         <button
           onClick={() => reset()}
           type="button"
           className="rounded-md px-4 py-2 outline outline-1"
         >
-          Reset
+          Use Defaults
         </button>
         <button className="rounded-md px-4 py-2 outline outline-1">
           Submit
