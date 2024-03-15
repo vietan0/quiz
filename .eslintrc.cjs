@@ -19,7 +19,7 @@ module.exports = {
     'simple-import-sort/exports': 'error',
     '@stylistic/padding-line-between-statements': [
       'error',
-      { blankLine: 'always', prev: '*', next: 'return' },
+      { blankLine: 'always', prev: '*', next: ['return', 'export'] },
       {
         blankLine: 'always',
         prev: 'import',
@@ -27,13 +27,28 @@ module.exports = {
       },
       {
         blankLine: 'always',
-        prev: ['multiline-expression', 'multiline-block-like', 'interface'],
+        prev: [
+          'multiline-expression',
+          'multiline-block-like',
+          'multiline-const',
+          'interface',
+        ],
         next: '*',
       },
       {
         blankLine: 'always',
         prev: '*',
-        next: ['multiline-expression', 'multiline-block-like', 'interface'],
+        next: [
+          'multiline-expression',
+          'multiline-block-like',
+          'multiline-const',
+          'interface',
+        ],
+      },
+      {
+        blankLine: 'never',
+        prev: ['singleline-const', 'singleline-let', 'singleline-var'],
+        next: ['singleline-const', 'singleline-let', 'singleline-var'],
       },
     ],
   },

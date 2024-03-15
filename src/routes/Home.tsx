@@ -2,11 +2,19 @@ import { DevTool } from '@hookform/devtools';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Input } from '@nextui-org/input';
 import { Select, SelectItem } from '@nextui-org/select';
+import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { z } from 'zod';
+import { fromZodError } from 'zod-validation-error';
 
-const difficulty = ['easy', 'medium', 'hard'] as const;
-const category = ['pokemons', 'games', 'history'] as const;
+import {
+  categories,
+  categoryNames,
+  difficulty,
+  openTriviaResponses,
+  responseCodesMap,
+} from '../types/api-data';
+import { dataSchema, Form, formSchema, urlSchema } from '../types/schemas';
+
 export const Nexts = () => (
   <>
     <Input
@@ -30,7 +38,7 @@ export const Nexts = () => (
       ))}
     </Select>
     <Select label="Category" placeholder="Select a category" variant="bordered">
-      {category.map((c) => (
+      {categoryNames.map((c) => (
         <SelectItem key={c} value={c}>
           {c}
         </SelectItem>
@@ -39,43 +47,72 @@ export const Nexts = () => (
   </>
 );
 
-const formSchema = z.object({
-  questionCount: z.coerce.number().gte(5).lte(40),
-  difficulty: z.enum(difficulty, {
-    errorMap: (_issue, ctx) => {
-      if (ctx.data === '') return { message: 'Difficulty cannot be empty' };
-
-      return { message: ctx.defaultError };
-    },
-  }),
-  category: z.enum(category, {
-    errorMap: (_issue, ctx) => {
-      if (ctx.data === '') return { message: 'Category cannot be empty' };
-
-      return { message: ctx.defaultError };
-    },
-  }),
-});
-type Form = z.infer<typeof formSchema>;
-
 export default function Home() {
+  const [data, setData] = useState({});
+
   const { register, handleSubmit, reset, formState, control } = useForm<Form>({
     mode: 'onChange',
     defaultValues: {
       questionCount: 5,
-      difficulty: 'medium',
-      category: 'games',
+      difficulty: 'any',
+      category: 'Any Category',
     },
     resolver: zodResolver(formSchema),
   });
 
-  const onSubmit: SubmitHandler<Form> = (data) => console.log(data);
+  const onSubmit: SubmitHandler<Form> = async (data) => {
+    const { questionCount, difficulty, category } = data;
+    const questionCountQuery = `?amount=${questionCount}`;
+
+    const difficultyQuery =
+      difficulty === 'any' ? '' : `&difficulty=${difficulty}`;
+
+    const categoryQuery =
+      category === 'Any Category' ? '' : `&category=${categories[category]}`;
+
+    const url = `https://opentdb.com/api.php${questionCountQuery}${difficultyQuery}${categoryQuery}`;
+    const validUrl = urlSchema.parse(url);
+    console.log(validUrl);
+
+    const res = await fetch(`https://opentdb.com/api.php?amount=0`);
+    const fetchedData = await res.json();
+    const result = dataSchema.safeParse(fetchedData);
+    console.log(result);
+
+    if (result.success) {
+      const receivedCode = result.data.response_code;
+
+      if (receivedCode === 0) {
+        setData(result.data);
+      } else {
+        const response = openTriviaResponses.find(
+          (key) => responseCodesMap[key] === receivedCode,
+        );
+
+        console.log(response);
+      }
+    } else {
+      const validationError = fromZodError(result.error);
+      console.log(validationError.toString());
+    }
+  };
+
+  useEffect(() => {
+    console.log('data', data);
+  }, [data]);
 
   return (
     <div>
       <p className="text-4xl font-bold">Quiz</p>
       <p>Test your knowledge with some quick trivia!</p>
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+      <form
+        onSubmit={(e) =>
+          handleSubmit(onSubmit)(e).catch((e) =>
+            console.log('Error while fetching', e),
+          )
+        }
+        className="flex flex-col gap-4"
+      >
         <label>
           Number of questions
           <br />
@@ -84,7 +121,7 @@ export default function Home() {
             type="number"
             {...register('questionCount')}
           />
-          <span>{formState.errors.questionCount?.message}</span>
+          <p>{formState.errors.questionCount?.message}</p>
         </label>
         <label>
           Difficulty
@@ -94,7 +131,7 @@ export default function Home() {
             type="text"
             {...register('difficulty')}
           />
-          <span>{formState.errors.difficulty?.message}</span>
+          <p>{formState.errors.difficulty?.message}</p>
         </label>
         <label>
           Category
@@ -104,14 +141,14 @@ export default function Home() {
             type="text"
             {...register('category')}
           />
-          <span>{formState.errors.category?.message}</span>
+          <p>{formState.errors.category?.message}</p>
         </label>
         <button
           onClick={() => reset()}
           type="button"
           className="rounded-md px-4 py-2 outline outline-1"
         >
-          Use Defaults
+          Reset
         </button>
         <button className="rounded-md px-4 py-2 outline outline-1">
           Submit
