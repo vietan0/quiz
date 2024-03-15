@@ -6,14 +6,10 @@ import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { fromZodError } from 'zod-validation-error';
 
-import {
-  categories,
-  categoryNames,
-  difficulty,
-  openTriviaResponses,
-  responseCodesMap,
-} from '../types/api-data';
-import { dataSchema, Form, formSchema, urlSchema } from '../types/schemas';
+import { categoryNames, difficulty } from '../types/api-data';
+import { Data, dataSchema, Form, formSchema } from '../types/schemas';
+import openTriviaErrorHandling from '../utils/openTriviaErrorHandling';
+import urlJoin from '../utils/urlJoin';
 
 export const Nexts = () => (
   <>
@@ -48,7 +44,7 @@ export const Nexts = () => (
 );
 
 export default function Home() {
-  const [data, setData] = useState({});
+  const [data, setData] = useState<Data>({} as Data);
 
   const { register, handleSubmit, reset, formState, control } = useForm<Form>({
     mode: 'onChange',
@@ -61,36 +57,13 @@ export default function Home() {
   });
 
   const onSubmit: SubmitHandler<Form> = async (data) => {
-    const { questionCount, difficulty, category } = data;
-    const questionCountQuery = `?amount=${questionCount}`;
-
-    const difficultyQuery =
-      difficulty === 'any' ? '' : `&difficulty=${difficulty}`;
-
-    const categoryQuery =
-      category === 'Any Category' ? '' : `&category=${categories[category]}`;
-
-    const url = `https://opentdb.com/api.php${questionCountQuery}${difficultyQuery}${categoryQuery}`;
-    const validUrl = urlSchema.parse(url);
-    console.log(validUrl);
-
-    const res = await fetch(`https://opentdb.com/api.php?amount=0`);
+    const validUrl = urlJoin(data);
+    const res = await fetch(validUrl);
     const fetchedData = await res.json();
     const result = dataSchema.safeParse(fetchedData);
-    console.log(result);
 
     if (result.success) {
-      const receivedCode = result.data.response_code;
-
-      if (receivedCode === 0) {
-        setData(result.data);
-      } else {
-        const response = openTriviaResponses.find(
-          (key) => responseCodesMap[key] === receivedCode,
-        );
-
-        console.log(response);
-      }
+      openTriviaErrorHandling(result.data, setData);
     } else {
       const validationError = fromZodError(result.error);
       console.log(validationError.toString());

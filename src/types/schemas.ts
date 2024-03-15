@@ -43,7 +43,8 @@ const dataSchema = z.object({
 
 type Form = z.infer<typeof formSchema>;
 type Question = z.infer<typeof questionSchema>;
+type Data = z.infer<typeof dataSchema>;
 
 export { dataSchema, formSchema, questionSchema, urlSchema };
 
-export type { Form, Question };
+export type { Data, Form, Question };
