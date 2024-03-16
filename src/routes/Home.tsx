@@ -58,16 +58,10 @@ export default function Home() {
         <Controller
           name="questionCount"
           control={control}
-          render={({
-            field: { onChange, onBlur, value, name, disabled, ref },
-          }) => (
+          render={({ field }) => (
             <Input
-              onChange={onChange}
-              onBlur={onBlur}
-              value={value.toString()} // nextui issue #1404
-              name={name}
-              disabled={disabled}
-              ref={ref}
+              {...field}
+              value={field.value.toString()} // nextui issue #1404
               type="number"
               label="Number of questions"
               min={3}
@@ -86,7 +80,7 @@ export default function Home() {
               label="Difficulty"
               selectionMode="single"
               disallowEmptySelection
-              defaultSelectedKeys={[defaultValues.difficulty]}
+              selectedKeys={[field.value]}
               isInvalid={Boolean(formState.errors.difficulty)}
               errorMessage={formState.errors.difficulty?.message}
               listboxProps={{
@@ -112,7 +106,7 @@ export default function Home() {
               label="Category"
               selectionMode="single"
               disallowEmptySelection
-              defaultSelectedKeys={[defaultValues.category]}
+              selectedKeys={[field.value]}
               isInvalid={Boolean(formState.errors.category)}
               errorMessage={formState.errors.category?.message}
               listboxProps={{
@@ -129,7 +123,7 @@ export default function Home() {
             </Select>
           )}
         />
-        <Button variant="ghost" type="button" onClick={() => reset()}>
+        <Button variant="ghost" type="button" onPress={() => reset()}>
           Reset
         </Button>
         <Button variant="ghost" color="primary">
