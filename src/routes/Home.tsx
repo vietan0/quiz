@@ -1,58 +1,31 @@
 import { DevTool } from '@hookform/devtools';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Button } from '@nextui-org/button';
 import { Input } from '@nextui-org/input';
 import { Select, SelectItem } from '@nextui-org/select';
-import { useEffect, useState } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { decode } from 'html-entities';
+import { useState } from 'react';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { fromZodError } from 'zod-validation-error';
 
 import { categoryNames, difficulty } from '../types/api-data';
 import { Data, dataSchema, Form, formSchema } from '../types/schemas';
+import capitalize from '../utils/capitalize';
 import openTriviaErrorHandling from '../utils/openTriviaErrorHandling';
 import urlJoin from '../utils/urlJoin';
 
-export const Nexts = () => (
-  <>
-    <Input
-      type="number"
-      label="Number of questions"
-      placeholder="5"
-      fullWidth={false}
-      variant="bordered"
-      min={1}
-      max={40}
-    />
-    <Select
-      label="Difficulty"
-      placeholder="Select a difficulty"
-      variant="bordered"
-    >
-      {difficulty.map((d) => (
-        <SelectItem key={d} value={d}>
-          {d}
-        </SelectItem>
-      ))}
-    </Select>
-    <Select label="Category" placeholder="Select a category" variant="bordered">
-      {categoryNames.map((c) => (
-        <SelectItem key={c} value={c}>
-          {c}
-        </SelectItem>
-      ))}
-    </Select>
-  </>
-);
+const defaultValues: Form = {
+  questionCount: 5,
+  difficulty: 'any',
+  category: 'Any Category',
+};
 
 export default function Home() {
   const [data, setData] = useState<Data>({} as Data);
 
-  const { register, handleSubmit, reset, formState, control } = useForm<Form>({
+  const { handleSubmit, reset, formState, control } = useForm<Form>({
     mode: 'onChange',
-    defaultValues: {
-      questionCount: 5,
-      difficulty: 'any',
-      category: 'Any Category',
-    },
+    defaultValues,
     resolver: zodResolver(formSchema),
   });
 
@@ -70,10 +43,6 @@ export default function Home() {
     }
   };
 
-  useEffect(() => {
-    console.log('data', data);
-  }, [data]);
-
   return (
     <div>
       <p className="text-4xl font-bold">Quiz</p>
@@ -84,49 +53,90 @@ export default function Home() {
             console.log('Error while fetching', e),
           )
         }
-        className="flex flex-col gap-4"
+        className="flex max-w-sm flex-col gap-4"
       >
-        <label>
-          Number of questions
-          <br />
-          <input
-            className="rounded-md outline outline-1"
-            type="number"
-            {...register('questionCount')}
-          />
-          <p>{formState.errors.questionCount?.message}</p>
-        </label>
-        <label>
-          Difficulty
-          <br />
-          <input
-            className="rounded-md outline outline-1"
-            type="text"
-            {...register('difficulty')}
-          />
-          <p>{formState.errors.difficulty?.message}</p>
-        </label>
-        <label>
-          Category
-          <br />
-          <input
-            className="rounded-md outline outline-1"
-            type="text"
-            {...register('category')}
-          />
-          <p>{formState.errors.category?.message}</p>
-        </label>
-        <button
-          onClick={() => reset()}
-          type="button"
-          className="rounded-md px-4 py-2 outline outline-1"
-        >
+        <Controller
+          name="questionCount"
+          control={control}
+          render={({
+            field: { onChange, onBlur, value, name, disabled, ref },
+          }) => (
+            <Input
+              onChange={onChange}
+              onBlur={onBlur}
+              value={value.toString()} // nextui issue #1404
+              name={name}
+              disabled={disabled}
+              ref={ref}
+              type="number"
+              label="Number of questions"
+              min={3}
+              max={40}
+              isInvalid={Boolean(formState.errors.questionCount)}
+              errorMessage={formState.errors.questionCount?.message}
+            />
+          )}
+        />
+        <Controller
+          name="difficulty"
+          control={control}
+          render={({ field }) => (
+            <Select
+              {...field}
+              label="Difficulty"
+              selectionMode="single"
+              disallowEmptySelection
+              defaultSelectedKeys={[defaultValues.difficulty]}
+              isInvalid={Boolean(formState.errors.difficulty)}
+              errorMessage={formState.errors.difficulty?.message}
+              listboxProps={{
+                itemClasses: {
+                  base: ['data-[selectable=true]:focus:bg-default-300/40'],
+                },
+              }}
+            >
+              {difficulty.map((d) => (
+                <SelectItem key={d} value={d}>
+                  {capitalize(d)}
+                </SelectItem>
+              ))}
+            </Select>
+          )}
+        />
+        <Controller
+          name="category"
+          control={control}
+          render={({ field }) => (
+            <Select
+              {...field}
+              label="Category"
+              selectionMode="single"
+              disallowEmptySelection
+              defaultSelectedKeys={[defaultValues.category]}
+              isInvalid={Boolean(formState.errors.category)}
+              errorMessage={formState.errors.category?.message}
+              listboxProps={{
+                itemClasses: {
+                  base: ['data-[selectable=true]:focus:bg-default-300/40'],
+                },
+              }}
+            >
+              {categoryNames.map((c) => (
+                <SelectItem key={c} value={c}>
+                  {decode(c)}
+                </SelectItem>
+              ))}
+            </Select>
+          )}
+        />
+        <Button variant="ghost" type="button" onClick={() => reset()}>
           Reset
-        </button>
-        <button className="rounded-md px-4 py-2 outline outline-1">
+        </Button>
+        <Button variant="ghost" color="primary">
           Submit
-        </button>
+        </Button>
       </form>
+      <pre>{JSON.stringify(data, null, 2)}</pre>
       <DevTool control={control} />
     </div>
   );

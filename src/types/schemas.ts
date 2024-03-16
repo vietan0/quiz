@@ -8,7 +8,7 @@ import {
 } from './api-data';
 
 const formSchema = z.object({
-  questionCount: z.coerce.number().gte(3).lte(40),
+  questionCount: z.coerce.number().int().gte(3).lte(40),
   difficulty: z.enum(difficulty, {
     errorMap: (_issue, ctx) => {
       if (ctx.data === '') return { message: 'Difficulty cannot be empty' };
