@@ -65,7 +65,7 @@ export default function Home() {
               value={field.value.toString()} // nextui issue #1404
               type="number"
               label="Number of questions"
-              min={3}
+              min={1}
               max={40}
               isInvalid={Boolean(formState.errors.questionCount)}
               errorMessage={formState.errors.questionCount?.message}
@@ -136,7 +136,9 @@ export default function Home() {
         <Button variant="ghost" type="submit" color="primary">
           Submit
         </Button>
-        <p className="text-sm text-red-500">{errMsg}</p>
+        <p className="text-sm text-red-500" data-testid="submit-error-message">
+          {errMsg}
+        </p>
       </form>
       <pre>{JSON.stringify(data, null, 2)}</pre>
       <DevTool control={control} />
