@@ -61,7 +61,7 @@ const openTriviaResponses = [
   'success',
   'noResults',
   'invalidParams',
-  'tokenNotEnough',
+  'tokenNotFound',
   'tokenEmpty',
   'rateLimit',
 ] as const;
@@ -75,7 +75,7 @@ const responseCodesMap: Record<
   success: 0,
   noResults: 1,
   invalidParams: 2,
-  tokenNotEnough: 3,
+  tokenNotFound: 3,
   tokenEmpty: 4,
   rateLimit: 5,
 };

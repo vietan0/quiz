@@ -20,6 +20,7 @@ module.exports = {
     '@stylistic/padding-line-between-statements': [
       'error',
       { blankLine: 'always', prev: '*', next: ['return', 'export'] },
+      { blankLine: 'never', prev: 'export', next: 'export' },
       {
         blankLine: 'always',
         prev: 'import',

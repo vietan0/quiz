@@ -6,12 +6,13 @@ import { Select, SelectItem } from '@nextui-org/select';
 import { decode } from 'html-entities';
 import { useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { ZodError } from 'zod';
 import { fromZodError } from 'zod-validation-error';
 
+import fetchQuiz from '../api';
 import { categoryNames, difficulty } from '../types/api-data';
-import { Data, dataSchema, Form, formSchema } from '../types/schemas';
+import { Data, Form, formSchema } from '../types/schemas';
 import capitalize from '../utils/capitalize';
-import openTriviaErrorHandling from '../utils/openTriviaErrorHandling';
 import urlJoin from '../utils/urlJoin';
 
 const defaultValues: Form = {
@@ -21,7 +22,8 @@ const defaultValues: Form = {
 };
 
 export default function Home() {
-  const [data, setData] = useState<Data>({} as Data);
+  const [data, setData] = useState<Data>(null as unknown as Data);
+  const [errMsg, setErrMsg] = useState('');
 
   const { handleSubmit, reset, formState, control } = useForm<Form>({
     mode: 'onChange',
@@ -31,15 +33,18 @@ export default function Home() {
 
   const onSubmit: SubmitHandler<Form> = async (data) => {
     const validUrl = urlJoin(data);
-    const res = await fetch(validUrl);
-    const fetchedData = await res.json();
-    const result = dataSchema.safeParse(fetchedData);
 
-    if (result.success) {
-      openTriviaErrorHandling(result.data, setData);
-    } else {
-      const validationError = fromZodError(result.error);
-      console.log(validationError.toString());
+    try {
+      const result = await fetchQuiz(validUrl);
+      setData(result);
+    } catch (error) {
+      if (error instanceof ZodError) {
+        const validationError = fromZodError(error);
+        setErrMsg(validationError.toString());
+      } else {
+        const err = error as Error;
+        setErrMsg(err.message);
+      }
     }
   };
 
@@ -48,12 +53,8 @@ export default function Home() {
       <p className="text-4xl font-bold">Quiz</p>
       <p>Test your knowledge with some quick trivia!</p>
       <form
-        onSubmit={(e) =>
-          handleSubmit(onSubmit)(e).catch((e) =>
-            console.log('Error while fetching', e),
-          )
-        }
-        className="flex max-w-sm flex-col gap-4"
+        onSubmit={handleSubmit(onSubmit)}
+        className="flex max-w-sm flex-col gap-2"
       >
         <Controller
           name="questionCount"
@@ -123,12 +124,19 @@ export default function Home() {
             </Select>
           )}
         />
-        <Button variant="ghost" type="button" onPress={() => reset()}>
+        <Button
+          variant="ghost"
+          onPress={() => {
+            reset();
+            setErrMsg('');
+          }}
+        >
           Reset
         </Button>
-        <Button variant="ghost" color="primary">
+        <Button variant="ghost" type="submit" color="primary">
           Submit
         </Button>
+        <p className="text-sm text-red-500">{errMsg}</p>
       </form>
       <pre>{JSON.stringify(data, null, 2)}</pre>
       <DevTool control={control} />
