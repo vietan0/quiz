@@ -83,15 +83,14 @@ const responseCodeErrorMap: z.ZodErrorMap = (issue, ctx) => {
 };
 
 const dataSchema = z.object({
-  response_code: z.literal(0, {
-    errorMap: responseCodeErrorMap,
-  }),
+  response_code: z.literal(0, { errorMap: responseCodeErrorMap }),
   results: z.array(questionSchema),
 });
 
 type Form = z.infer<typeof formSchema>;
 type Question = z.infer<typeof questionSchema>;
+type Quiz = Question[];
 type Data = z.infer<typeof dataSchema>;
 
 export { dataSchema, formSchema, questionSchema, urlSchema };
-export type { Data, Form, Question };
+export type { Data, Form, Question, Quiz };

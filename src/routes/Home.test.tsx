@@ -46,31 +46,30 @@ test('If invalid questionCount, fetchQuiz should not be called', async () => {
 test('fetchQuiz is called when click submit button', async () => {
   render(<Home />);
 
-  mockFetchQuiz.mockResolvedValueOnce({
-    response_code: 0,
-    results: [
-      {
-        type: 'multiple',
-        difficulty: 'medium',
-        category: 'Entertainment: Film',
-        question:
-          'What is the make and model of the tour vehicles in &quot;Jurassic Park&quot; (1993)?',
-        correct_answer: '1992 Ford Explorer XLT',
-        incorrect_answers: [
-          '1992 Toyota Land Cruiser',
-          '1992 Jeep Wrangler YJ Sahar',
-          'Mercedes M-Class',
-        ],
-      },
-    ],
-  });
+  mockFetchQuiz.mockResolvedValueOnce([
+    {
+      type: 'multiple',
+      difficulty: 'medium',
+      category: 'Entertainment: Film',
+      question:
+        'What is the make and model of the tour vehicles in &quot;Jurassic Park&quot; (1993)?',
+      correct_answer: '1992 Ford Explorer XLT',
+      incorrect_answers: [
+        '1992 Toyota Land Cruiser',
+        '1992 Jeep Wrangler YJ Sahar',
+        'Mercedes M-Class',
+      ],
+    },
+  ]);
 
   const submitBtn = screen.getByText('Submit');
   fireEvent.submit(submitBtn);
   await waitFor(() => expect(fetchQuiz).toBeCalledTimes(1));
 
   await waitFor(() =>
-    expect(fetchQuiz).toBeCalledWith('https://opentdb.com/api.php?amount=5'),
+    expect(fetchQuiz).toBeCalledWith(
+      'https://opentdb.com/api.php?type=multiple&amount=5',
+    ),
   );
 
   await waitFor(() =>
@@ -89,7 +88,7 @@ test('If invalid/empty URL, should see error message', async () => {
 
     const validData = dataSchema.parse(fetchedData);
 
-    return validData;
+    return validData.results;
   });
 
   const submitBtn = screen.getByText('Submit');

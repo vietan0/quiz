@@ -10,8 +10,9 @@ import { ZodError } from 'zod';
 import { fromZodError } from 'zod-validation-error';
 
 import fetchQuiz from '../api';
+import useQuizStore from '../quizStore';
 import { categoryNames, difficulty } from '../types/api-data';
-import { Data, Form, formSchema } from '../types/schemas';
+import { Form, formSchema } from '../types/schemas';
 import capitalize from '../utils/capitalize';
 import urlJoin from '../utils/urlJoin';
 
@@ -22,7 +23,7 @@ const defaultValues: Form = {
 };
 
 export default function Home() {
-  const [data, setData] = useState<Data>(null as unknown as Data);
+  const { quiz, setQuiz, resetQuiz } = useQuizStore((s) => s);
   const [errMsg, setErrMsg] = useState('');
 
   const { handleSubmit, reset, formState, control } = useForm<Form>({
@@ -35,8 +36,7 @@ export default function Home() {
     const validUrl = urlJoin(data);
 
     try {
-      const result = await fetchQuiz(validUrl);
-      setData(result);
+      setQuiz(await fetchQuiz(validUrl));
     } catch (error) {
       if (error instanceof ZodError) {
         const validationError = fromZodError(error);
@@ -140,7 +140,10 @@ export default function Home() {
           {errMsg}
         </p>
       </form>
-      <pre>{JSON.stringify(data, null, 2)}</pre>
+      <Button variant="ghost" color="danger" onPress={resetQuiz}>
+        Reset Quiz
+      </Button>
+      <pre>{JSON.stringify(quiz, null, 2)}</pre>
       <DevTool control={control} />
     </div>
   );
