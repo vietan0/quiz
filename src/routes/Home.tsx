@@ -4,8 +4,8 @@ import { Button } from '@nextui-org/button';
 import { Input } from '@nextui-org/input';
 import { Select, SelectItem } from '@nextui-org/select';
 import { decode } from 'html-entities';
-import { useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import { ZodError } from 'zod';
 import { fromZodError } from 'zod-validation-error';
 
@@ -23,8 +23,8 @@ const defaultValues: Form = {
 };
 
 export default function Home() {
-  const { quiz, setQuiz, resetQuiz } = useQuizStore((s) => s);
-  const [errMsg, setErrMsg] = useState('');
+  const { setQuiz, resetState, setErrorMsg } = useQuizStore((s) => s);
+  const navigate = useNavigate();
 
   const { handleSubmit, reset, formState, control } = useForm<Form>({
     mode: 'onChange',
@@ -36,21 +36,22 @@ export default function Home() {
     const validUrl = urlJoin(data);
 
     try {
+      navigate('/quiz');
       setQuiz(await fetchQuiz(validUrl));
     } catch (error) {
       if (error instanceof ZodError) {
         const validationError = fromZodError(error);
-        setErrMsg(validationError.toString());
+        setErrorMsg(validationError.toString());
       } else {
         const err = error as Error;
-        setErrMsg(err.message);
+        setErrorMsg(err.message);
       }
     }
   };
 
   return (
     <div>
-      <p className="text-4xl font-bold">Quiz</p>
+      <h1 className="text-4xl font-bold">Home</h1>
       <p>Test your knowledge with some quick trivia!</p>
       <form
         onSubmit={handleSubmit(onSubmit)}
@@ -115,6 +116,9 @@ export default function Home() {
                   base: ['data-[selectable=true]:focus:bg-default-300/40'],
                 },
               }}
+              scrollShadowProps={{
+                isEnabled: false,
+              }}
             >
               {categoryNames.map((c) => (
                 <SelectItem key={c} value={c}>
@@ -128,22 +132,15 @@ export default function Home() {
           variant="ghost"
           onPress={() => {
             reset();
-            setErrMsg('');
+            resetState();
           }}
         >
-          Reset
+          Reset Form
         </Button>
         <Button variant="ghost" type="submit" color="primary">
           Submit
         </Button>
-        <p className="text-sm text-red-500" data-testid="submit-error-message">
-          {errMsg}
-        </p>
       </form>
-      <Button variant="ghost" color="danger" onPress={resetQuiz}>
-        Reset Quiz
-      </Button>
-      <pre>{JSON.stringify(quiz, null, 2)}</pre>
       <DevTool control={control} />
     </div>
   );

@@ -4,17 +4,21 @@ import { Quiz } from './types/schemas';
 
 type State = {
   quiz: Quiz | null;
+  errorMsg: string | null;
 };
 
 type Action = {
   setQuiz: (quiz: Quiz) => void;
-  resetQuiz: () => void;
+  setErrorMsg: (errorMsg: string) => void;
+  resetState: () => void;
 };
 
 const useQuizStore = create<State & Action>((set) => ({
   quiz: null,
+  errorMsg: null,
   setQuiz: (quiz) => set({ quiz }),
-  resetQuiz: () => set({ quiz: null }),
+  setErrorMsg: (errorMsg) => set({ errorMsg }),
+  resetState: () => set({ quiz: null, errorMsg: null }),
 }));
 
 export default useQuizStore;

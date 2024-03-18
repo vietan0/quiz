@@ -5,11 +5,16 @@ import {
   screen,
   waitFor,
 } from '@testing-library/react';
+import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 import { afterEach, expect, test, vi } from 'vitest';
 
 import fetchQuiz from '../api';
+import App from '../App';
 import { dataSchema } from '../types/schemas';
+import ErrorPage from './ErrorPage';
 import Home from './Home';
+import Quiz from './Quiz';
+import Result from './Result';
 
 vi.mock('../api');
 const mockFetchQuiz = vi.mocked(fetchQuiz);
@@ -19,8 +24,26 @@ afterEach(() => {
   vi.mocked(fetchQuiz).mockClear();
 });
 
+function customRender() {
+  const routes = [
+    {
+      path: '/',
+      element: <App />,
+      errorElement: <ErrorPage />,
+      children: [
+        { index: true, element: <Home /> },
+        { path: '/quiz', element: <Quiz /> },
+        { path: '/result', element: <Result /> },
+      ],
+    },
+  ];
+
+  const testRouter = createMemoryRouter(routes);
+  render(<RouterProvider router={testRouter} />);
+}
+
 test('Valid questionCount', async () => {
-  render(<Home />);
+  customRender();
 
   const getQuestionCountInput = () =>
     screen.getByLabelText<HTMLInputElement>('Number of questions');
@@ -30,7 +53,7 @@ test('Valid questionCount', async () => {
 });
 
 test('If invalid questionCount, fetchQuiz should not be called', async () => {
-  render(<Home />);
+  customRender();
 
   const getQuestionCountInput = () =>
     screen.getByLabelText<HTMLInputElement>('Number of questions');
@@ -44,7 +67,7 @@ test('If invalid questionCount, fetchQuiz should not be called', async () => {
 });
 
 test('fetchQuiz is called when click submit button', async () => {
-  render(<Home />);
+  customRender();
 
   mockFetchQuiz.mockResolvedValueOnce([
     {
@@ -78,7 +101,7 @@ test('fetchQuiz is called when click submit button', async () => {
 });
 
 test('If invalid/empty URL, should see error message', async () => {
-  render(<Home />);
+  customRender();
 
   mockFetchQuiz.mockImplementationOnce(async () => {
     const fetchedData = {
@@ -93,7 +116,7 @@ test('If invalid/empty URL, should see error message', async () => {
 
   const submitBtn = screen.getByText('Submit');
   fireEvent.submit(submitBtn);
-  const getSubmitErrMsg = () => screen.getByTestId('submit-error-message');
+  const getErrorMsg = () => screen.getByTestId('errorMsg');
 
   await waitFor(() => expect(fetchQuiz).toBeCalledTimes(1));
 
@@ -101,5 +124,5 @@ test('If invalid/empty URL, should see error message', async () => {
     expect(mockFetchQuiz.mock.results[0].type).toEqual('throw'),
   );
 
-  expect(getSubmitErrMsg()).toHaveTextContent(/validation error/gi);
+  expect(getErrorMsg()).toHaveTextContent(/validation error/gi);
 });
