@@ -29,7 +29,7 @@ export default function QuestionScreen({ q, index }: Props) {
         }}
       >
         {shuffleAnswers(correct_answer, incorrect_answers).map(
-          ({ text, correct }, i) => (
+          ({ value: text, correct }, i) => (
             <AnswerRadio text={text} correct={correct} index={i} key={i} />
           ),
         )}

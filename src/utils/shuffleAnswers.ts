@@ -1,7 +1,7 @@
 import randomize from './randomize';
 
 type Answer = {
-  text: string;
+  value: string;
   correct: boolean;
 };
 
@@ -10,8 +10,8 @@ function craftAnswerObjects(
   incorrect_answers: string[],
 ): Answer[] {
   return [
-    { text: correct_answer, correct: true },
-    ...incorrect_answers.map((text) => ({ text, correct: false })),
+    { value: correct_answer, correct: true },
+    ...incorrect_answers.map((value) => ({ value, correct: false })),
   ];
 }
 
