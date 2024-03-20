@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 
 import { Quiz } from './types/schemas';
+import { quizFactory } from './utils/factory';
 
 type State = {
   quiz: Quiz | null;
@@ -14,7 +15,7 @@ type Action = {
 };
 
 const useQuizStore = create<State & Action>((set) => ({
-  quiz: null,
+  quiz: quizFactory(),
   errorMsg: null,
   setQuiz: (quiz) => set({ quiz }),
   setErrorMsg: (errorMsg) => set({ errorMsg }),

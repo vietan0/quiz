@@ -4,7 +4,6 @@ import {
   categoryNames,
   difficulty,
   openTriviaResponses,
-  questionType,
   responseCodesMap,
 } from './api-data';
 
@@ -29,12 +28,12 @@ const formSchema = z.object({
 const urlSchema = z.string().url({ message: 'Invalid URL' });
 
 const questionSchema = z.object({
-  type: z.enum(questionType),
+  type: z.literal('multiple'),
   difficulty: z.enum(difficulty),
   category: z.enum(categoryNames),
   question: z.string(),
   correct_answer: z.string(),
-  incorrect_answers: z.array(z.string()),
+  incorrect_answers: z.array(z.string()).length(3),
 });
 
 const responseCodeErrorMap: z.ZodErrorMap = (issue, ctx) => {

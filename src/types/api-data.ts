@@ -1,4 +1,3 @@
-const questionType = ['multiple', 'boolean'] as const;
 const difficulty = ['any', 'easy', 'medium', 'hard'] as const;
 
 const categoryNames = [
@@ -86,6 +85,5 @@ export {
   difficulty,
   openTriviaResponseCodes,
   openTriviaResponses,
-  questionType,
   responseCodesMap,
 };
