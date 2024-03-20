@@ -1,5 +1,7 @@
 {
   "plugins": ["prettier-plugin-tailwindcss"],
+  "tailwindAttributes": ["classNames"],
+  "tailwindFunctions": ["clsx", "twMerge", "cn"],
   "arrowParens": "always",
   "bracketSameLine": false,
   "bracketSpacing": true,

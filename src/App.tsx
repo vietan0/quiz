@@ -10,24 +10,26 @@ export default function App() {
   const resetState = useQuizStore((state) => state.resetState);
 
   return (
-    <div className="m-10">
-      <NavLink
-        className="mr-4 underline"
-        style={style}
-        to="/"
-        onClick={resetState}
-      >
-        Home
-      </NavLink>
-      <NavLink className="mr-4 underline" style={style} to="/quiz">
-        Quiz
-      </NavLink>
-      <NavLink className="mr-4 underline" style={style} to="/result">
-        Result
-      </NavLink>
-      <NavLink className="mr-4 underline" style={style} to="/error">
-        ErrorPage
-      </NavLink>
+    <div id="App">
+      <div className="m-10">
+        <NavLink
+          className="mr-4 underline"
+          style={style}
+          to="/"
+          onClick={resetState}
+        >
+          Home
+        </NavLink>
+        <NavLink className="mr-4 underline" style={style} to="/quiz">
+          Quiz
+        </NavLink>
+        <NavLink className="mr-4 underline" style={style} to="/result">
+          Result
+        </NavLink>
+        <NavLink className="mr-4 underline" style={style} to="/error">
+          ErrorPage
+        </NavLink>
+      </div>
       <Outlet />
     </div>
   );

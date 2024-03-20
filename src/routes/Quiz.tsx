@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
 
+import QuestionScreen from '../components/QuestionScreen';
 import useQuizStore from '../quizStore';
+import { Question } from '../types/schemas';
 
 export default function Quiz() {
   const { quiz, errorMsg, resetState } = useQuizStore(
@@ -20,15 +22,15 @@ export default function Quiz() {
   );
 
   return (
-    <div>
-      <h1>Quiz</h1>
-      {errorMsg ? (
-        errMsgDiv
-      ) : quiz ? (
-        <pre>{JSON.stringify(quiz, null, 2)}</pre>
-      ) : (
-        'Loading...'
-      )}
+    <div id="Quiz">
+      <h1 className="mx-10">Quiz</h1>
+      {errorMsg
+        ? errMsgDiv
+        : quiz
+          ? quiz.map((q: Question, i) => (
+              <QuestionScreen q={q} index={i} key={i} />
+            ))
+          : 'Preparing some questions...'}
     </div>
   );
 }
