@@ -1,9 +1,5 @@
+import { Answer } from '../types/schemas';
 import randomize from './randomize';
-
-type Answer = {
-  value: string;
-  correct: boolean;
-};
 
 function craftAnswerObjects(
   correct_answer: string,

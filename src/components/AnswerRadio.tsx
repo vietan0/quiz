@@ -3,15 +3,15 @@ import { encode } from 'html-entities';
 
 import cn from '../utils/cn';
 type Props = {
-  text: string;
+  value: string;
   correct?: boolean;
   index: number;
 };
 
-export default function AnswerRadio({ text, correct = false, index }: Props) {
+export default function AnswerRadio({ value, correct = false, index }: Props) {
   return (
     <Radio
-      value={encode(text)}
+      value={encode(value)}
       description={index + 1}
       classNames={{
         base: cn(
@@ -28,7 +28,7 @@ export default function AnswerRadio({ text, correct = false, index }: Props) {
           'self-center rounded-md px-2 py-1 text-xs leading-4 text-default-500 outline outline-1 outline-default',
       }}
     >
-      {text}
+      {value}
     </Radio>
   );
 }

@@ -11,6 +11,7 @@ import { afterEach, expect, test, vi } from 'vitest';
 import fetchQuiz from '../api';
 import App from '../App';
 import { dataSchema } from '../types/schemas';
+import shuffleAnswers from '../utils/shuffleAnswers';
 import ErrorPage from './ErrorPage';
 import Home from './Home';
 import Quiz from './Quiz';
@@ -82,6 +83,12 @@ test('fetchQuiz is called when click submit button', async () => {
         '1992 Jeep Wrangler YJ Sahar',
         'Mercedes M-Class',
       ],
+      answers: [
+        { value: '1992 Ford Explorer XLT', correct: true },
+        { value: '1992 Toyota Land Cruiser', correct: false },
+        { value: '1992 Jeep Wrangler YJ Sahar', correct: false },
+        { value: 'Mercedes M-Class', correct: false },
+      ],
     },
   ]);
 
@@ -111,7 +118,14 @@ test('If invalid/empty URL, should see error message', async () => {
 
     const validData = dataSchema.parse(fetchedData);
 
-    return validData.results;
+    const quiz = validData.results.map((question) => {
+      const { correct_answer, incorrect_answers } = question;
+      const answers = shuffleAnswers(correct_answer, incorrect_answers);
+
+      return { ...question, answers };
+    });
+
+    return quiz;
   });
 
   const submitBtn = screen.getByText('Submit');
