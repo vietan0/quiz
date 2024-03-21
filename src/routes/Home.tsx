@@ -10,9 +10,9 @@ import { ZodError } from 'zod';
 import { fromZodError } from 'zod-validation-error';
 
 import fetchQuiz from '../api';
-import useQuizStore from '../quizStore';
 import { categoryNames, difficulty } from '../types/api-data';
 import { Form, formSchema } from '../types/schemas';
+import useStore from '../useStore';
 import capitalize from '../utils/capitalize';
 import urlJoin from '../utils/urlJoin';
 
@@ -23,7 +23,7 @@ const defaultValues: Form = {
 };
 
 export default function Home() {
-  const { setQuiz, resetState, setErrorMsg } = useQuizStore((s) => s);
+  const { setQuiz, resetState, setErrorMsg } = useStore((s) => s);
   const navigate = useNavigate();
 
   const { handleSubmit, reset, formState, control } = useForm<Form>({
