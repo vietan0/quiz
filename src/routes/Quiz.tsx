@@ -1,5 +1,8 @@
+import { Button, ButtonGroup } from '@nextui-org/button';
 import { Link } from 'react-router-dom';
 
+import MaterialSymbolsArrowLeftAltRounded from '../components/icons/MaterialSymbolsArrowLeftAltRounded';
+import MaterialSymbolsArrowRightAltRounded from '../components/icons/MaterialSymbolsArrowRightAltRounded';
 import QuestionScreen from '../components/QuestionScreen';
 import useStore from '../useStore';
 
@@ -19,18 +22,51 @@ export default function Quiz() {
   );
 
   return (
-    <div id="Quiz" className="h-full">
+    <div id="Quiz" className="flex min-h-screen flex-col justify-between">
       {errorMsg ? (
         errMsgDiv
       ) : quiz ? (
         <>
-          <div id="progress-bar" className="sticky top-0 border px-4 py-8">
+          <div
+            id="progress-bar"
+            className="border px-4 py-8 xs:px-8 sm:px-16 lg:px-32"
+          >
             Question {index + 1} of {quiz.length}
           </div>
           <QuestionScreen q={quiz[index]} key={index} />
-          <div className="sticky bottom-0 border px-4 py-8">
-            <button onClick={() => moveIndex(-1)}>Previous</button>
-            <button onClick={() => moveIndex(1)}>Next</button>
+          <div className="flex justify-center border px-4 py-8 xs:px-8 sm:px-16 lg:px-32">
+            <ButtonGroup radius="md">
+              <Button
+                variant="ghost"
+                size="lg"
+                className="w-40"
+                onPress={() => moveIndex(-1)}
+                startContent={
+                  <MaterialSymbolsArrowLeftAltRounded
+                    viewBox={undefined}
+                    width="1.5em"
+                    height="1.5em"
+                  />
+                }
+              >
+                Previous
+              </Button>
+              <Button
+                variant="ghost"
+                size="lg"
+                className="w-40"
+                onPress={() => moveIndex(1)}
+                endContent={
+                  <MaterialSymbolsArrowRightAltRounded
+                    viewBox={undefined}
+                    width="1.5em"
+                    height="1.5em"
+                  />
+                }
+              >
+                Next
+              </Button>
+            </ButtonGroup>
           </div>
         </>
       ) : (

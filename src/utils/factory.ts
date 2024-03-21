@@ -24,9 +24,7 @@ function questionFactory(): QuestionShuffled {
 }
 
 function quizFactory() {
-  const randomLength = faker.number.int({ min: 1, max: 5 });
-
-  return Array.from({ length: randomLength }).map((_) => questionFactory());
+  return Array.from({ length: 5 }).map((_) => questionFactory());
 }
 
 export { questionFactory, quizFactory };
