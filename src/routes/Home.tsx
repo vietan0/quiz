@@ -13,7 +13,6 @@ import fetchQuiz from '../api';
 import { categoryNames, difficulty } from '../types/api-data';
 import { Form, formSchema } from '../types/schemas';
 import useStore from '../useStore';
-import capitalize from '../utils/capitalize';
 import urlJoin from '../utils/urlJoin';
 
 const defaultValues: Form = {
@@ -85,15 +84,17 @@ export default function Home() {
               selectedKeys={[field.value]}
               isInvalid={Boolean(formState.errors.difficulty)}
               errorMessage={formState.errors.difficulty?.message}
+              classNames={{ value: 'capitalize' }}
               listboxProps={{
                 itemClasses: {
                   base: ['data-[selectable=true]:focus:bg-default-300/40'],
+                  title: 'capitalize',
                 },
               }}
             >
               {difficulty.map((d) => (
                 <SelectItem key={d} value={d}>
-                  {capitalize(d)}
+                  {d}
                 </SelectItem>
               ))}
             </Select>

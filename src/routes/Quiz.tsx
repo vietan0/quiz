@@ -1,4 +1,6 @@
 import { Button, ButtonGroup } from '@nextui-org/button';
+import { AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
 import MaterialSymbolsArrowLeftAltRounded from '../components/icons/MaterialSymbolsArrowLeftAltRounded';
@@ -7,7 +9,9 @@ import QuestionScreen from '../components/QuestionScreen';
 import useStore from '../useStore';
 
 export default function Quiz() {
-  const { quiz, errorMsg, resetState, index, moveIndex } = useStore((s) => s);
+  const { quiz, errorMsg, resetState, index, direction, moveIndex } = useStore(
+    (s) => s,
+  );
 
   const errMsgDiv = (
     <div>
@@ -21,6 +25,18 @@ export default function Quiz() {
     </div>
   );
 
+  const variants = {
+    enter: (direction: 1 | -1) => ({
+      x: direction === 1 ? 1000 : -1000,
+      opacity: 0,
+    }),
+    stay: { x: 0, opacity: 1 },
+    exit: (direction: 1 | -1) => ({
+      x: direction === 1 ? -1000 : 1000,
+      opacity: 0,
+    }),
+  };
+
   return (
     <div id="Quiz" className="flex min-h-screen flex-col justify-between">
       {errorMsg ? (
@@ -33,7 +49,19 @@ export default function Quiz() {
           >
             Question {index + 1} of {quiz.length}
           </div>
-          <QuestionScreen q={quiz[index]} key={index} />
+          <AnimatePresence mode="popLayout" custom={direction}>
+            <motion.div
+              key={index}
+              variants={variants}
+              custom={direction}
+              initial="enter"
+              animate="stay"
+              exit="exit"
+              transition={{ type: 'tween' }}
+            >
+              <QuestionScreen q={quiz[index]} key={index} />
+            </motion.div>
+          </AnimatePresence>
           <div className="flex justify-center border px-4 py-8 xs:px-8 sm:px-16 lg:px-32">
             <ButtonGroup radius="md">
               <Button

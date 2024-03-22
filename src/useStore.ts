@@ -14,7 +14,8 @@ type QuizSlice = {
 
 type ActiveQuestionSlice = {
   index: number;
-  moveIndex: (move: 1 | -1) => void;
+  direction: 1 | -1;
+  moveIndex: (direction: 1 | -1) => void;
 };
 
 const useStore = create<QuizSlice & ActiveQuestionSlice>((set) => ({
@@ -24,15 +25,16 @@ const useStore = create<QuizSlice & ActiveQuestionSlice>((set) => ({
   setErrorMsg: (errorMsg) => set({ errorMsg }),
   resetState: () => set({ quiz: null, errorMsg: null }),
   index: 0,
-  moveIndex: (move) =>
+  direction: 1,
+  moveIndex: (direction) =>
     set(({ quiz, index }) => {
       if (
-        (move === -1 && index === 0) ||
-        (move === 1 && index === quiz!.length - 1)
+        (direction === -1 && index === 0) ||
+        (direction === 1 && index === quiz!.length - 1)
       )
-        return { index };
+        return { index, direction };
 
-      return { index: index + move };
+      return { index: index + direction, direction };
     }),
 }));
 

@@ -12,8 +12,8 @@ export default function QuestionScreen({ q }: { q: QuestionShuffled }) {
       label={question}
       orientation="horizontal"
       classNames={{
-        base: 'flex-grow gap-20 px-4 py-8 xs:px-8 sm:px-24 lg:px-48',
-        label: 'min-h-20 text-2xl font-bold text-foreground',
+        base: 'min-h-[440px] flex-grow gap-20 px-4 py-8 xs:px-8 sm:px-24 sm:py-0 lg:px-48',
+        label: 'min-h-16 text-2xl font-bold text-foreground',
         wrapper: 'grid auto-rows-fr justify-items-stretch gap-2 sm:grid-cols-2',
       }}
     >
