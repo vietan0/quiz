@@ -9,7 +9,7 @@ import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 import { afterEach, expect, test, vi } from 'vitest';
 
 import fetchQuiz from '../api';
-import useMainStore from '../useStore';
+import useMainStore from '../useMainStore';
 import { quizFactory } from '../utils/factory';
 import routes from '.';
 

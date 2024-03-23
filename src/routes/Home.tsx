@@ -12,7 +12,7 @@ import { fromZodError } from 'zod-validation-error';
 import fetchQuiz from '../api';
 import { categoryNames, difficulty } from '../types/api-data';
 import { Form, formSchema } from '../types/schemas';
-import useMainStore from '../useStore';
+import useMainStore from '../useMainStore';
 import urlJoin from '../utils/urlJoin';
 
 const defaultValues: Form = {

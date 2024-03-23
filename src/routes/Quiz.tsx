@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import MaterialSymbolsArrowLeftAltRounded from '../components/icons/MaterialSymbolsArrowLeftAltRounded';
 import MaterialSymbolsArrowRightAltRounded from '../components/icons/MaterialSymbolsArrowRightAltRounded';
 import QuestionScreen from '../components/QuestionScreen';
-import useMainStore from '../useStore';
+import useMainStore from '../useMainStore';
 
 export default function Quiz() {
   const { quiz, quizErrMsg, resetQuiz, index, direction, moveIndex } =
