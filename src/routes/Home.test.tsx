@@ -113,7 +113,7 @@ test('If invalid/empty URL, should see error message', async () => {
 
   const submitBtn = screen.getByText('Submit');
   fireEvent.submit(submitBtn);
-  const getErrorMsg = () => screen.getByTestId('errorMsg');
+  const getquizErrMsg = () => screen.getByTestId('quizErrMsg');
 
   await waitFor(() => expect(fetchQuiz).toBeCalledTimes(1));
 
@@ -121,5 +121,5 @@ test('If invalid/empty URL, should see error message', async () => {
     expect(mockFetchQuiz.mock.results[0].type).toEqual('throw'),
   );
 
-  expect(getErrorMsg()).toHaveTextContent(/validation error/gi);
+  expect(getquizErrMsg()).toHaveTextContent(/validation error/gi);
 });

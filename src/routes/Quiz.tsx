@@ -5,19 +5,19 @@ import { Link } from 'react-router-dom';
 import MaterialSymbolsArrowLeftAltRounded from '../components/icons/MaterialSymbolsArrowLeftAltRounded';
 import MaterialSymbolsArrowRightAltRounded from '../components/icons/MaterialSymbolsArrowRightAltRounded';
 import QuestionScreen from '../components/QuestionScreen';
-import useStore from '../useStore';
+import useMainStore from '../useStore';
 
 export default function Quiz() {
-  const { quiz, errorMsg, resetState, index, direction, moveIndex } =
-    useStore();
+  const { quiz, quizErrMsg, resetQuiz, index, direction, moveIndex } =
+    useMainStore();
 
   const errMsgDiv = (
     <div>
       <p>There has been an error while getting quiz:</p>
-      <pre className="text-sm text-red-500" data-testid="errorMsg">
-        {errorMsg}
+      <pre className="text-sm text-red-500" data-testid="quizErrMsg">
+        {quizErrMsg}
       </pre>
-      <Link to="/" className="underline" onClick={resetState}>
+      <Link to="/" className="underline" onClick={resetQuiz}>
         Go Home
       </Link>
     </div>
@@ -37,7 +37,7 @@ export default function Quiz() {
 
   return (
     <div className="flex min-h-screen flex-col justify-between">
-      {errorMsg ? (
+      {quizErrMsg ? (
         errMsgDiv
       ) : quiz ? (
         <>

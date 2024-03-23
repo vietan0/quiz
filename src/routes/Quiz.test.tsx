@@ -9,7 +9,7 @@ import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 import { afterEach, expect, test, vi } from 'vitest';
 
 import fetchQuiz from '../api';
-import useStore from '../useStore';
+import useMainStore from '../useStore';
 import { quizFactory } from '../utils/factory';
 import routes from '.';
 
@@ -47,19 +47,19 @@ async function renderQuiz() {
 
 test('Click Previous when at first question should not do anything', async () => {
   const { prevBtn, getQuestionSpan } = await renderQuiz();
-  expect(useStore.getState()).toMatchObject({ index: 0, direction: 1 });
+  expect(useMainStore.getState()).toMatchObject({ index: 0, direction: 1 });
   expect(getQuestionSpan(0)).toBeInTheDocument();
   fireEvent.click(prevBtn);
-  expect(useStore.getState()).toMatchObject({ index: 0, direction: -1 });
+  expect(useMainStore.getState()).toMatchObject({ index: 0, direction: -1 });
   expect(getQuestionSpan(0)).toBeInTheDocument();
 });
 
 test('Click Next should go to next question', async () => {
   const { nextBtn, getQuestionSpan } = await renderQuiz();
-  expect(useStore.getState()).toMatchObject({ index: 0, direction: 1 });
+  expect(useMainStore.getState()).toMatchObject({ index: 0, direction: 1 });
   expect(getQuestionSpan(0)).toBeInTheDocument();
   fireEvent.click(nextBtn);
-  expect(useStore.getState()).toMatchObject({ index: 1, direction: 1 });
+  expect(useMainStore.getState()).toMatchObject({ index: 1, direction: 1 });
   expect(getQuestionSpan(1)).toBeInTheDocument();
 });
 

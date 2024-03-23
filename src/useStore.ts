@@ -6,10 +6,10 @@ import { quizFactory } from './utils/factory';
 
 type QuizSlice = {
   quiz: Quiz | null;
-  errorMsg: string | null;
+  quizErrMsg: string | null;
   setQuiz: (quiz: Quiz) => void;
-  setErrorMsg: (errorMsg: string) => void;
-  resetState: () => void;
+  setquizErrMsg: (quizErrMsg: string) => void;
+  resetQuiz: () => void;
 };
 
 type ActiveQuestionSlice = {
@@ -18,12 +18,12 @@ type ActiveQuestionSlice = {
   moveIndex: (direction: 1 | -1) => void;
 };
 
-const useStore = create<QuizSlice & ActiveQuestionSlice>((set) => ({
+const useMainStore = create<QuizSlice & ActiveQuestionSlice>((set) => ({
   quiz: quizFactory(),
-  errorMsg: null,
+  quizErrMsg: null,
   setQuiz: (quiz) => set({ quiz }),
-  setErrorMsg: (errorMsg) => set({ errorMsg }),
-  resetState: () => set({ quiz: null, errorMsg: null }),
+  setquizErrMsg: (quizErrMsg) => set({ quizErrMsg }),
+  resetQuiz: () => set({ quiz: null, quizErrMsg: null }),
   index: 0,
   direction: 1,
   moveIndex: (direction) =>
@@ -39,7 +39,7 @@ const useStore = create<QuizSlice & ActiveQuestionSlice>((set) => ({
 }));
 
 if (process.env.NODE_ENV === 'development') {
-  mountStoreDevtool('Store', useStore);
+  mountStoreDevtool('Store', useMainStore);
 }
 
-export default useStore;
+export default useMainStore;

@@ -12,7 +12,7 @@ import { fromZodError } from 'zod-validation-error';
 import fetchQuiz from '../api';
 import { categoryNames, difficulty } from '../types/api-data';
 import { Form, formSchema } from '../types/schemas';
-import useStore from '../useStore';
+import useMainStore from '../useStore';
 import urlJoin from '../utils/urlJoin';
 
 const defaultValues: Form = {
@@ -22,9 +22,9 @@ const defaultValues: Form = {
 };
 
 export default function Home() {
-  const setQuiz = useStore((state) => state.setQuiz);
-  const resetState = useStore((state) => state.resetState);
-  const setErrorMsg = useStore((state) => state.setErrorMsg);
+  const setQuiz = useMainStore((state) => state.setQuiz);
+  const resetQuiz = useMainStore((state) => state.resetQuiz);
+  const setquizErrMsg = useMainStore((state) => state.setquizErrMsg);
   const navigate = useNavigate();
 
   const { handleSubmit, reset, formState, control } = useForm<Form>({
@@ -42,10 +42,10 @@ export default function Home() {
     } catch (error) {
       if (error instanceof ZodError) {
         const validationError = fromZodError(error);
-        setErrorMsg(validationError.toString());
+        setquizErrMsg(validationError.toString());
       } else {
         const err = error as Error;
-        setErrorMsg(err.message);
+        setquizErrMsg(err.message);
       }
     }
   };
@@ -135,7 +135,7 @@ export default function Home() {
           variant="ghost"
           onPress={() => {
             reset();
-            resetState();
+            resetQuiz();
           }}
         >
           Reset Form
