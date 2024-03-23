@@ -1,6 +1,6 @@
 import { Button, ButtonGroup } from '@nextui-org/button';
 import { AnimatePresence } from 'framer-motion';
-import { motion } from 'framer-motion';
+import { motion, MotionGlobalConfig } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
 import MaterialSymbolsArrowLeftAltRounded from '../components/icons/MaterialSymbolsArrowLeftAltRounded';
@@ -8,7 +8,9 @@ import MaterialSymbolsArrowRightAltRounded from '../components/icons/MaterialSym
 import QuestionScreen from '../components/QuestionScreen';
 import useStore from '../useStore';
 
-export default function Quiz() {
+export default function Quiz({ skip = false }) {
+  MotionGlobalConfig.skipAnimations = skip;
+
   const { quiz, errorMsg, resetState, index, direction, moveIndex } = useStore(
     (s) => s,
   );
@@ -38,7 +40,10 @@ export default function Quiz() {
   };
 
   return (
-    <div id="Quiz" className="flex min-h-screen flex-col justify-between">
+    <div
+      data-testid="Quiz"
+      className="flex min-h-screen flex-col justify-between"
+    >
       {errorMsg ? (
         errMsgDiv
       ) : quiz ? (

@@ -23,8 +23,8 @@ function questionFactory(): QuestionShuffled {
   };
 }
 
-function quizFactory() {
-  return Array.from({ length: 5 }).map((_) => questionFactory());
+function quizFactory(length = 5) {
+  return Array.from({ length }).map((_) => questionFactory());
 }
 
 export { questionFactory, quizFactory };
