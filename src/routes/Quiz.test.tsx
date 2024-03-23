@@ -35,7 +35,7 @@ async function renderQuiz() {
       errorElement: <ErrorPage />,
       children: [
         { index: true, element: <Home /> },
-        { path: '/quiz', element: <Quiz skip /> },
+        { path: '/quiz', element: <Quiz /> },
         { path: '/result', element: <Result /> },
       ],
     },
@@ -47,6 +47,12 @@ async function renderQuiz() {
   const submitBtn = screen.getByText('Submit');
   fireEvent.submit(submitBtn);
   await waitFor(() => expect(fetchQuiz).toBeCalledTimes(1));
+
+  expect(screen.getByTestId('motion.div')).toHaveAttribute(
+    'style',
+    expect.stringMatching(/opacity: 1/),
+  ); // confirm that animation is disabled
+
   // get buttons
   const prevBtn = await screen.findByRole('button', { name: /Previous/i });
   const nextBtn = await screen.findByRole('button', { name: /Next/i });
@@ -58,7 +64,6 @@ async function renderQuiz() {
 
 test('Click Previous when at first question should not do anything', async () => {
   const { prevBtn, getQuestionSpan } = await renderQuiz();
-
   expect(useStore.getState()).toMatchObject({ index: 0, direction: 1 });
   expect(getQuestionSpan(0)).toBeInTheDocument();
   fireEvent.click(prevBtn);
