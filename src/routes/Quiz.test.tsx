@@ -9,13 +9,9 @@ import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 import { afterEach, expect, test, vi } from 'vitest';
 
 import fetchQuiz from '../api';
-import App from '../App';
 import useStore from '../useStore';
 import { quizFactory } from '../utils/factory';
-import ErrorPage from './ErrorPage';
-import Home from './Home';
-import Quiz from './Quiz';
-import Result from './Result';
+import routes from '.';
 
 vi.mock('../api');
 const mockFetchQuiz = vi.mocked(fetchQuiz);
@@ -28,19 +24,6 @@ afterEach(() => {
 });
 
 async function renderQuiz() {
-  const routes = [
-    {
-      path: '/',
-      element: <App />,
-      errorElement: <ErrorPage />,
-      children: [
-        { index: true, element: <Home /> },
-        { path: '/quiz', element: <Quiz /> },
-        { path: '/result', element: <Result /> },
-      ],
-    },
-  ];
-
   const testRouter = createMemoryRouter(routes);
   render(<RouterProvider router={testRouter} />);
 

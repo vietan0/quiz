@@ -9,13 +9,9 @@ import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 import { afterEach, expect, test, vi } from 'vitest';
 
 import fetchQuiz from '../api';
-import App from '../App';
 import { dataSchema } from '../types/schemas';
 import shuffleAnswers from '../utils/shuffleAnswers';
-import ErrorPage from './ErrorPage';
-import Home from './Home';
-import Quiz from './Quiz';
-import Result from './Result';
+import routes from '.';
 
 vi.mock('../api');
 const mockFetchQuiz = vi.mocked(fetchQuiz);
@@ -25,26 +21,13 @@ afterEach(() => {
   vi.mocked(fetchQuiz).mockClear();
 });
 
-function customRender() {
-  const routes = [
-    {
-      path: '/',
-      element: <App />,
-      errorElement: <ErrorPage />,
-      children: [
-        { index: true, element: <Home /> },
-        { path: '/quiz', element: <Quiz /> },
-        { path: '/result', element: <Result /> },
-      ],
-    },
-  ];
-
+function renderHome() {
   const testRouter = createMemoryRouter(routes);
   render(<RouterProvider router={testRouter} />);
 }
 
 test('Valid questionCount', async () => {
-  customRender();
+  renderHome();
 
   const getQuestionCountInput = () =>
     screen.getByLabelText<HTMLInputElement>('Number of questions');
@@ -54,7 +37,7 @@ test('Valid questionCount', async () => {
 });
 
 test('If invalid questionCount, fetchQuiz should not be called', async () => {
-  customRender();
+  renderHome();
 
   const getQuestionCountInput = () =>
     screen.getByLabelText<HTMLInputElement>('Number of questions');
@@ -68,7 +51,7 @@ test('If invalid questionCount, fetchQuiz should not be called', async () => {
 });
 
 test('fetchQuiz is called when click submit button', async () => {
-  customRender();
+  renderHome();
 
   mockFetchQuiz.mockResolvedValueOnce([
     {
@@ -108,7 +91,7 @@ test('fetchQuiz is called when click submit button', async () => {
 });
 
 test('If invalid/empty URL, should see error message', async () => {
-  customRender();
+  renderHome();
 
   mockFetchQuiz.mockImplementationOnce(async () => {
     const fetchedData = {
