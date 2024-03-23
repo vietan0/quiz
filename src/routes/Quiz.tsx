@@ -8,9 +8,8 @@ import QuestionScreen from '../components/QuestionScreen';
 import useStore from '../useStore';
 
 export default function Quiz() {
-  const { quiz, errorMsg, resetState, index, direction, moveIndex } = useStore(
-    (s) => s,
-  );
+  const { quiz, errorMsg, resetState, index, direction, moveIndex } =
+    useStore();
 
   const errMsgDiv = (
     <div>

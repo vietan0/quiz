@@ -22,7 +22,9 @@ const defaultValues: Form = {
 };
 
 export default function Home() {
-  const { setQuiz, resetState, setErrorMsg } = useStore((s) => s);
+  const setQuiz = useStore((state) => state.setQuiz);
+  const resetState = useStore((state) => state.resetState);
+  const setErrorMsg = useStore((state) => state.setErrorMsg);
   const navigate = useNavigate();
 
   const { handleSubmit, reset, formState, control } = useForm<Form>({
