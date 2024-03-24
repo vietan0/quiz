@@ -45,13 +45,9 @@ async function renderQuiz() {
   return { prevBtn, nextBtn, getQuestionSpan };
 }
 
-test('Click Previous when at first question should not do anything', async () => {
-  const { prevBtn, getQuestionSpan } = await renderQuiz();
-  expect(useMainStore.getState()).toMatchObject({ index: 0, direction: 1 });
-  expect(getQuestionSpan(0)).toBeInTheDocument();
-  fireEvent.click(prevBtn);
-  expect(useMainStore.getState()).toMatchObject({ index: 0, direction: -1 });
-  expect(getQuestionSpan(0)).toBeInTheDocument();
+test('Previous button should be disabled at index 0', async () => {
+  const { prevBtn } = await renderQuiz();
+  expect(prevBtn).toBeDisabled();
 });
 
 test('Click Next should go to next question', async () => {

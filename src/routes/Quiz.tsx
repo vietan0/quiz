@@ -9,7 +9,7 @@ import QuestionScreen from '../components/QuestionScreen';
 import useMainStore from '../useMainStore';
 
 export default function Quiz() {
-  const { quiz, quizErrMsg, resetQuiz, index, direction, moveIndex } =
+  const { quiz, quizErrMsg, resetQuiz, index, direction, moveIndex, picked } =
     useMainStore();
 
   const errMsgDiv = (
@@ -57,12 +57,13 @@ export default function Quiz() {
               <QuestionScreen q={quiz[index]} qIndex={index} key={index} />
             </motion.div>
           </AnimatePresence>
-          <div className="flex justify-center border-t px-4 py-8 xs:px-8 sm:px-16 lg:px-32">
+          <div className="flex justify-between border-t px-4 py-8 xs:px-8 sm:px-16 lg:px-32">
             <ButtonGroup radius="md">
               <Button
                 variant="ghost"
                 size="lg"
                 className="w-40"
+                isDisabled={index === 0}
                 onPress={() => moveIndex(-1)}
                 startContent={
                   <MaterialSymbolsArrowLeftAltRounded
@@ -78,6 +79,7 @@ export default function Quiz() {
                 variant="ghost"
                 size="lg"
                 className="w-40"
+                isDisabled={index === quiz.length - 1}
                 onPress={() => moveIndex(1)}
                 endContent={
                   <MaterialSymbolsArrowRightAltRounded
@@ -90,6 +92,13 @@ export default function Quiz() {
                 Next
               </Button>
             </ButtonGroup>
+            <Button
+              size="lg"
+              isDisabled={picked!.filter((n) => n === undefined).length !== 0}
+              className="w-40 bg-green-500 font-bold text-white"
+            >
+              Submit
+            </Button>
           </div>
         </>
       ) : (
