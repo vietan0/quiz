@@ -1,9 +1,8 @@
+import { Icon } from '@iconify/react/dist/iconify.js';
 import { Button, ButtonGroup } from '@nextui-org/button';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
-import MaterialSymbolsArrowLeftAltRounded from '../components/icons/MaterialSymbolsArrowLeftAltRounded';
-import MaterialSymbolsArrowRightAltRounded from '../components/icons/MaterialSymbolsArrowRightAltRounded';
 import Progress from '../components/Progress';
 import QuestionScreen from '../components/QuestionScreen';
 import useMainStore from '../useMainStore';
@@ -66,10 +65,10 @@ export default function Quiz() {
                 isDisabled={index === 0}
                 onPress={() => moveIndex(-1)}
                 startContent={
-                  <MaterialSymbolsArrowLeftAltRounded
-                    viewBox={undefined}
-                    width="1.5em"
-                    height="1.5em"
+                  <Icon
+                    icon="material-symbols:arrow-left-alt-rounded"
+                    width={24}
+                    height={24}
                   />
                 }
               >
@@ -82,10 +81,10 @@ export default function Quiz() {
                 isDisabled={index === quiz.length - 1}
                 onPress={() => moveIndex(1)}
                 endContent={
-                  <MaterialSymbolsArrowRightAltRounded
-                    viewBox={undefined}
-                    width="1.5em"
-                    height="1.5em"
+                  <Icon
+                    icon="material-symbols:arrow-right-alt-rounded"
+                    width={24}
+                    height={24}
                   />
                 }
               >

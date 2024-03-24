@@ -1,3 +1,4 @@
+import { Icon } from '@iconify/react';
 import { Button } from '@nextui-org/button';
 import { Tooltip } from '@nextui-org/tooltip';
 import { useNavigate } from 'react-router-dom';
@@ -5,7 +6,6 @@ import { useNavigate } from 'react-router-dom';
 import useMainStore from '../useMainStore';
 import cn from '../utils/cn';
 import formatOrdinals from '../utils/formatOrdinals';
-import MaterialSymbolsCloseRounded from './icons/MaterialSymbolsCloseRounded';
 
 export default function Progress() {
   const index = useMainStore((state) => state.index);
@@ -23,13 +23,19 @@ export default function Progress() {
         <Button
           isIconOnly
           variant="light"
+          radius="sm"
           aria-label="Cancel quiz"
           onPress={() => {
             resetQuiz();
             navigate('/');
           }}
         >
-          <MaterialSymbolsCloseRounded />
+          <Icon
+            icon="material-symbols:close-rounded"
+            width={24}
+            height={24}
+            className="text-default-500"
+          />
         </Button>
       </Tooltip>
       <div
