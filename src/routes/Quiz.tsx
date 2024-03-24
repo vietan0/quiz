@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 
 import MaterialSymbolsArrowLeftAltRounded from '../components/icons/MaterialSymbolsArrowLeftAltRounded';
 import MaterialSymbolsArrowRightAltRounded from '../components/icons/MaterialSymbolsArrowRightAltRounded';
+import Progress from '../components/Progress';
 import QuestionScreen from '../components/QuestionScreen';
 import useMainStore from '../useMainStore';
 
@@ -25,12 +26,12 @@ export default function Quiz() {
 
   const variants = {
     enter: (direction: 1 | -1) => ({
-      x: direction === 1 ? 1000 : -1000,
+      x: direction === 1 ? 400 : -400,
       opacity: 0,
     }),
     stay: { x: 0, opacity: 1 },
     exit: (direction: 1 | -1) => ({
-      x: direction === 1 ? -1000 : 1000,
+      x: direction === 1 ? -400 : 400,
       opacity: 0,
     }),
   };
@@ -41,12 +42,7 @@ export default function Quiz() {
         errMsgDiv
       ) : quiz ? (
         <>
-          <div
-            id="progress-bar"
-            className="border px-4 py-8 xs:px-8 sm:px-16 lg:px-32"
-          >
-            Question {index + 1} of {quiz.length}
-          </div>
+          <Progress />
           <AnimatePresence mode="popLayout" custom={direction}>
             <motion.div
               key={index}
@@ -58,10 +54,10 @@ export default function Quiz() {
               transition={{ type: 'tween' }}
               data-testid="motion.div"
             >
-              <QuestionScreen q={quiz[index]} key={index} />
+              <QuestionScreen q={quiz[index]} qIndex={index} key={index} />
             </motion.div>
           </AnimatePresence>
-          <div className="flex justify-center border px-4 py-8 xs:px-8 sm:px-16 lg:px-32">
+          <div className="flex justify-center border-t px-4 py-8 xs:px-8 sm:px-16 lg:px-32">
             <ButtonGroup radius="md">
               <Button
                 variant="ghost"
