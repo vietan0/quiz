@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 import Progress from '../components/Progress';
 import QuestionScreen from '../components/QuestionScreen';
-import useMainStore from '../useMainStore';
+import useMainStore from '../zustand/useMainStore';
 
 export default function Quiz() {
   const { quiz, quizErrMsg, resetQuiz, index, direction, moveIndex, picked } =

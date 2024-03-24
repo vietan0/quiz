@@ -12,8 +12,8 @@ import { fromZodError } from 'zod-validation-error';
 import fetchQuiz from '../api';
 import { categoryNames, difficulty } from '../types/api-data';
 import { Form, formSchema } from '../types/schemas';
-import useMainStore from '../useMainStore';
 import urlJoin from '../utils/urlJoin';
+import useMainStore from '../zustand/useMainStore';
 
 const defaultValues: Form = {
   questionCount: 5,

@@ -3,9 +3,9 @@ import { Button } from '@nextui-org/button';
 import { Tooltip } from '@nextui-org/tooltip';
 import { useNavigate } from 'react-router-dom';
 
-import useMainStore from '../useMainStore';
 import cn from '../utils/cn';
 import formatOrdinals from '../utils/formatOrdinals';
+import useMainStore from '../zustand/useMainStore';
 
 export default function Progress() {
   const index = useMainStore((state) => state.index);

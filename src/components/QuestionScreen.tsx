@@ -1,8 +1,8 @@
 import { RadioGroup } from '@nextui-org/radio';
 
 import { QuestionShuffled } from '../types/schemas';
-import useMainStore from '../useMainStore';
 import decodeQuestion from '../utils/decodeQuestion';
+import useMainStore from '../zustand/useMainStore';
 import AnswerRadio from './AnswerRadio';
 
 export default function QuestionScreen({
