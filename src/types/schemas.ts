@@ -88,10 +88,9 @@ const dataSchema = z.object({
 
 type Form = z.infer<typeof formSchema>;
 type Question = z.infer<typeof questionSchema>;
-type Answer = { value: string; correct: boolean };
-type QuestionShuffled = Question & { answers: Answer[] };
+type QuestionShuffled = Question & { answers: string[] };
 type Quiz = QuestionShuffled[];
 type Data = z.infer<typeof dataSchema>;
 
 export { dataSchema, formSchema, questionSchema, urlSchema };
-export type { Answer, Data, Form, Question, QuestionShuffled, Quiz };
+export type { Data, Form, Question, QuestionShuffled, Quiz };

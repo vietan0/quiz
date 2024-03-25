@@ -67,10 +67,10 @@ test('fetchQuiz is called when click submit button', async () => {
         'Mercedes M-Class',
       ],
       answers: [
-        { value: '1992 Ford Explorer XLT', correct: true },
-        { value: '1992 Toyota Land Cruiser', correct: false },
-        { value: '1992 Jeep Wrangler YJ Sahar', correct: false },
-        { value: 'Mercedes M-Class', correct: false },
+        '1992 Ford Explorer XLT',
+        '1992 Toyota Land Cruiser',
+        '1992 Jeep Wrangler YJ Sahar',
+        'Mercedes M-Class',
       ],
     },
   ]);

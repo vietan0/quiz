@@ -60,10 +60,10 @@ test('Click Next should go to next question', async () => {
 });
 
 test('Answers order should be intact after navigating a few times', async () => {
-  const correctIndex = fakeQuiz[0].answers.findIndex((a) => a.correct);
+  const originAnswer = fakeQuiz[0].answers[0];
   const { prevBtn, nextBtn } = await renderQuiz();
   fireEvent.click(nextBtn);
   fireEvent.click(prevBtn);
-  expect(fakeQuiz[0].answers.findIndex((a) => a.correct)).toBe(correctIndex);
+  expect(fakeQuiz[0].answers[0]).toBe(originAnswer);
   // in other words, quizFactory/questionFactory/shuffleAnswers should not be called again
 });

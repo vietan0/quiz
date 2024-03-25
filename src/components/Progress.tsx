@@ -12,6 +12,7 @@ export default function Progress() {
   const setIndex = useMainStore((state) => state.setIndex);
   const picked = useMainStore((state) => state.picked);
   const resetQuiz = useMainStore((state) => state.resetQuiz);
+  const result = useMainStore((state) => state.result);
   const navigate = useNavigate();
 
   return (
@@ -44,27 +45,37 @@ export default function Progress() {
           picked!.length <= 12 ? 'gap-2' : 'gap-[3px]',
         )}
       >
-        {picked!.map((p, i) => (
-          <Tooltip
-            content={formatOrdinals(i + 1)}
-            size="sm"
-            radius="sm"
-            placement="bottom"
-            showArrow={true}
-            key={i}
-          >
-            <Button
-              variant="solid"
-              onPress={() => setIndex(i)}
-              className={cn(
-                'h-5 min-w-5 p-0',
-                picked!.length <= 12 ? 'rounded' : 'rounded-sm',
-                p === undefined ? 'bg-gray-200/75' : 'bg-primary-200',
-                index === i && 'bg-green-300',
-              )}
-            />
-          </Tooltip>
-        ))}
+        {picked!.map((p, i) => {
+          let bgColor;
+
+          if (result) {
+            bgColor = result[i] ? 'bg-success-200' : 'bg-danger-100';
+          } else {
+            bgColor = p === undefined ? 'bg-gray-200/75' : 'bg-primary-200';
+          }
+
+          return (
+            <Tooltip
+              content={formatOrdinals(i + 1)}
+              size="sm"
+              radius="sm"
+              placement="bottom"
+              showArrow={true}
+              key={i}
+            >
+              <Button
+                variant="solid"
+                onPress={() => setIndex(i)}
+                className={cn(
+                  'h-5 min-w-5 p-0',
+                  picked!.length <= 12 ? 'rounded' : 'rounded-sm',
+                  index === i && 'border-4 border-primary-400',
+                  bgColor,
+                )}
+              />
+            </Tooltip>
+          );
+        })}
       </div>
     </div>
   );
