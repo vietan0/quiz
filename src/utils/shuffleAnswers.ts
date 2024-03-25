@@ -1,7 +1,10 @@
 import randomize from './randomize';
 
 /**
- * @returns an array of 4 answer objects whose orders are randomized.
+ * @returns an array of 4 answer strings whose orders are randomized.
+ * @example
+ * shuffleAnswers('Jim', ['Pam', 'Dwight', 'Michael'])
+ * // ['Dwight', 'Pam', 'Michael', 'Jim']
  */
 export default function shuffleAnswers(
   correct_answer: string,

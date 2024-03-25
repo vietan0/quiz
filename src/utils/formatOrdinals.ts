@@ -9,6 +9,12 @@ const suffixes = new Map([
   ['other', 'th'],
 ]);
 
+/**
+ * @returns the ordinal form of the number
+ * @example
+ * formatOrdinals(3) // '3rd'
+ * formatOrdinals(21) // '21st'
+ */
 export default function formatOrdinals(n: number) {
   const rule = pr.select(n);
   const suffix = suffixes.get(rule);
