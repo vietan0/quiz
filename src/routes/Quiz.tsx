@@ -46,11 +46,6 @@ export default function Quiz() {
     </div>
   );
 
-  function checkAnswers() {
-    const result = picked!.map((pick, i) => pick === quiz![i].correct_answer);
-    setResult(result);
-  }
-
   return (
     <div className="flex min-h-screen flex-col justify-between">
       {quizErrMsg ? (
@@ -112,12 +107,8 @@ export default function Quiz() {
               isDisabled={picked!.filter((n) => n === undefined).length !== 0}
               className="w-40 bg-success-400 font-bold text-white"
               onPress={() => {
-                if (result) {
-                  console.log('quiz already done');
-                } else {
-                  navigate('/result');
-                  checkAnswers();
-                }
+                navigate('/result');
+                if (!result) setResult();
               }}
             >
               {result ? 'Go To Result' : 'Submit'}

@@ -11,7 +11,7 @@ test('Likelyhood of one element being the first index is around 25%', () => {
   }
 
   const jimIsFirst = spyShuffleAnswers.mock.results.filter(
-    (result) => result.value[0].value === 'Jim',
+    (result) => result.value[0] === 'Jim',
   );
 
   expect(spyShuffleAnswers).toHaveBeenCalledTimes(calledTimes);

@@ -20,8 +20,13 @@ type PickedSlice = {
 };
 
 type ResultSlice = {
-  result: boolean[] | null;
-  setResult: (result: boolean[]) => void;
+  result: {
+    correctMap: boolean[];
+    correctCount: number;
+    percentage: number;
+    msgs: { main: string; sub: string };
+  } | null;
+  setResult: () => void;
 };
 
 type AllSlices = QuizSlice & ActiveQuestionSlice & PickedSlice & ResultSlice;

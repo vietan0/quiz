@@ -20,25 +20,27 @@ export default function Progress() {
       id="Progress"
       className="flex items-center gap-4 border-b px-4 py-8 xs:px-8 sm:px-16 lg:px-32"
     >
-      <Tooltip content="Cancel quiz" radius="sm" closeDelay={0}>
-        <Button
-          isIconOnly
-          variant="light"
-          radius="sm"
-          aria-label="Cancel quiz"
-          onPress={() => {
-            resetQuiz();
-            navigate('/');
-          }}
-        >
-          <Icon
-            icon="material-symbols:close-rounded"
-            width={24}
-            height={24}
-            className="text-default-500"
-          />
-        </Button>
-      </Tooltip>
+      {!result && (
+        <Tooltip content="Cancel quiz" radius="sm" closeDelay={0}>
+          <Button
+            isIconOnly
+            variant="light"
+            radius="sm"
+            aria-label="Cancel quiz"
+            onPress={() => {
+              resetQuiz();
+              navigate('/');
+            }}
+          >
+            <Icon
+              icon="material-symbols:close-rounded"
+              width={24}
+              height={24}
+              className="text-default-500"
+            />
+          </Button>
+        </Tooltip>
+      )}
       <div
         className={cn(
           'grid w-full grid-cols-[repeat(auto-fit,_minmax(20px,_1fr))]',
@@ -49,9 +51,11 @@ export default function Progress() {
           let bgColor;
 
           if (result) {
-            bgColor = result[i] ? 'bg-success-200' : 'bg-danger-100';
+            bgColor = result.correctMap[i]
+              ? 'bg-success-200'
+              : 'bg-danger-100/75';
           } else {
-            bgColor = p === undefined ? 'bg-gray-200/75' : 'bg-primary-200';
+            bgColor = p === undefined ? 'bg-gray-200/75' : 'bg-primary-100';
           }
 
           return (
@@ -64,12 +68,10 @@ export default function Progress() {
               key={i}
             >
               <Button
-                variant="solid"
                 onPress={() => setIndex(i)}
                 className={cn(
-                  'h-5 min-w-5 p-0',
-                  picked!.length <= 12 ? 'rounded' : 'rounded-sm',
-                  index === i && 'border-4 border-primary-400',
+                  'h-5 min-w-5 rounded p-0',
+                  index === i && 'border-3 border-primary-300',
                   bgColor,
                 )}
               />

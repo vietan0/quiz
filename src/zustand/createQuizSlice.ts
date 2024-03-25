@@ -16,5 +16,6 @@ export const createQuizSlice: StateCreator<AllSlices, [], [], QuizSlice> = (
       index: 0,
       direction: 1,
       picked: null,
+      result: null,
     }),
 });

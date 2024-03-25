@@ -22,7 +22,6 @@ export default function AnswerRadio({ answer, answerIndex, index }: Props) {
   const selectedHighlight = [
     'data-[selected=true]:border-primary-300',
     'data-[selected=true]:bg-primary-50',
-    'data-[selected=true]:font-bold',
     '[&_span]:data-[selected=true]:text-primary',
     '[&_span:last-child]:data-[selected=true]:border-primary-300',
   ];
