@@ -5,12 +5,14 @@ import { quizFactory } from '../utils/factory';
 import { createActiveQuestionSlice } from './createActiveQuestionSlice';
 import { createPickedSlice } from './createPickedSlice';
 import { createQuizSlice } from './createQuizSlice';
+import { createResultSlice } from './createResultSlice';
 import { AllSlices } from './types';
 
 const useMainStore = create<AllSlices>()((...a) => ({
   ...createQuizSlice(...a),
   ...createActiveQuestionSlice(...a),
   ...createPickedSlice(...a),
+  ...createResultSlice(...a),
 }));
 
 const fakeQuiz = quizFactory(15);

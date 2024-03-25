@@ -16,9 +16,20 @@ type ActiveQuestionSlice = {
 
 type PickedSlice = {
   picked: string[] | null;
-  setPicked: (answer: string, qIndex: number) => void;
+  setPicked: (answer: string, index: number) => void;
 };
 
-type AllSlices = QuizSlice & ActiveQuestionSlice & PickedSlice;
+type ResultSlice = {
+  result: boolean[] | null;
+  setResult: (result: boolean[]) => void;
+};
 
-export type { ActiveQuestionSlice, AllSlices, PickedSlice, QuizSlice };
+type AllSlices = QuizSlice & ActiveQuestionSlice & PickedSlice & ResultSlice;
+
+export type {
+  ActiveQuestionSlice,
+  AllSlices,
+  PickedSlice,
+  QuizSlice,
+  ResultSlice,
+};
