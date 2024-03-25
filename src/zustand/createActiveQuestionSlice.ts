@@ -26,6 +26,6 @@ export const createActiveQuestionSlice: StateCreator<
       if (newIndex < index) newDirection = -1;
       else if (newIndex > index) newDirection = 1;
 
-      return { index, direction: newDirection };
+      return { index: newIndex, direction: newDirection };
     }),
 });
