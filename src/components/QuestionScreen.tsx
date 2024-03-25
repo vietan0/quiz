@@ -7,10 +7,10 @@ import AnswerRadio from './AnswerRadio';
 
 export default function QuestionScreen({
   q,
-  qIndex,
+  index,
 }: {
   q: QuestionShuffled;
-  qIndex: number;
+  index: number;
 }) {
   const { question, answers } = decodeQuestion(q);
   const picked = useMainStore((state) => state.picked);
@@ -20,9 +20,9 @@ export default function QuestionScreen({
     <RadioGroup
       label={question}
       orientation="horizontal"
-      value={picked![qIndex]}
+      value={picked![index]}
       onValueChange={(encodedValue) => {
-        setPicked(encodedValue, qIndex);
+        setPicked(encodedValue, index);
       }}
       classNames={{
         base: 'min-h-[440px] flex-grow gap-20 px-4 py-8 xs:px-8 sm:px-24 sm:py-0 lg:px-48',

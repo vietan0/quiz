@@ -19,7 +19,7 @@ export default function Progress() {
       id="Progress"
       className="flex items-center gap-4 border-b px-4 py-8 xs:px-8 sm:px-16 lg:px-32"
     >
-      <Tooltip content="Cancel quiz" closeDelay={0}>
+      <Tooltip content="Cancel quiz" radius="sm" closeDelay={0}>
         <Button
           isIconOnly
           variant="light"
@@ -48,6 +48,7 @@ export default function Progress() {
           <Tooltip
             content={formatOrdinals(i + 1)}
             size="sm"
+            radius="sm"
             placement="bottom"
             showArrow={true}
             key={i}

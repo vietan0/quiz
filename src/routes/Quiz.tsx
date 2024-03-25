@@ -25,12 +25,12 @@ export default function Quiz() {
 
   const variants = {
     enter: (direction: 1 | -1) => ({
-      x: direction === 1 ? 400 : -400,
+      x: direction === 1 ? 60 : -60,
       opacity: 0,
     }),
     stay: { x: 0, opacity: 1 },
     exit: (direction: 1 | -1) => ({
-      x: direction === 1 ? -400 : 400,
+      x: direction === 1 ? -60 : 60,
       opacity: 0,
     }),
   };
@@ -53,7 +53,7 @@ export default function Quiz() {
               transition={{ type: 'tween' }}
               data-testid="motion.div"
             >
-              <QuestionScreen q={quiz[index]} qIndex={index} key={index} />
+              <QuestionScreen q={quiz[index]} index={index} key={index} />
             </motion.div>
           </AnimatePresence>
           <div className="flex justify-between border-t px-4 py-8 xs:px-8 sm:px-16 lg:px-32">

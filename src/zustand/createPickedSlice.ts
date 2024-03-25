@@ -6,11 +6,9 @@ export const createPickedSlice: StateCreator<AllSlices, [], [], PickedSlice> = (
   set,
 ) => ({
   picked: null,
-  setPicked: (answer: string, qIndex: number) => {
+  setPicked: (answer: string, index: number) => {
     set(({ picked }) => {
-      const newPicked = picked!.map((prev, i) =>
-        i === qIndex ? answer : prev,
-      );
+      const newPicked = picked!.map((prev, i) => (i === index ? answer : prev));
 
       return { picked: newPicked };
     });
