@@ -10,7 +10,10 @@ export default function Result() {
   const navigate = useNavigate();
 
   return (
-    <div className="flex min-h-screen flex-grow flex-col justify-center gap-10 px-4 py-16 text-center xs:px-8 sm:px-24 lg:px-48">
+    <div
+      data-testid="Result"
+      className="flex min-h-screen flex-grow flex-col justify-center gap-10 px-4 py-16 text-center xs:px-8 sm:px-24 lg:px-48"
+    >
       {result && (
         <>
           <div>

@@ -47,7 +47,10 @@ export default function Quiz() {
   );
 
   return (
-    <div className="flex min-h-screen flex-col justify-between">
+    <div
+      data-testid="Quiz"
+      className="flex min-h-screen flex-col justify-between"
+    >
       {quizErrMsg ? (
         errMsgDiv
       ) : quiz ? (

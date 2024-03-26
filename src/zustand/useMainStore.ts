@@ -1,7 +1,6 @@
 import { mountStoreDevtool } from 'simple-zustand-devtools';
 import { create } from 'zustand';
 
-import { quizFactory } from '../utils/factory';
 import { createActiveQuestionSlice } from './createActiveQuestionSlice';
 import { createPickedSlice } from './createPickedSlice';
 import { createQuizSlice } from './createQuizSlice';
@@ -14,13 +13,6 @@ const useMainStore = create<AllSlices>()((...a) => ({
   ...createPickedSlice(...a),
   ...createResultSlice(...a),
 }));
-
-const fakeQuiz = quizFactory(15);
-
-useMainStore.setState({
-  quiz: fakeQuiz,
-  picked: Array.from({ length: fakeQuiz.length }),
-});
 
 if (process.env.NODE_ENV === 'development') {
   mountStoreDevtool('MainStore', useMainStore);

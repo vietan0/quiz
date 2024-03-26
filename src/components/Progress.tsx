@@ -48,14 +48,24 @@ export default function Progress() {
         )}
       >
         {picked!.map((p, i) => {
-          let bgColor;
+          let bgColor, status;
 
           if (result) {
-            bgColor = result.correctMap[i]
-              ? 'bg-success-200'
-              : 'bg-danger-100/75';
+            if (result.correctMap[i]) {
+              bgColor = 'bg-success-200';
+              status = 'correct';
+            } else {
+              bgColor = 'bg-danger-100/75';
+              status = 'incorrect';
+            }
           } else {
-            bgColor = p === undefined ? 'bg-gray-200/75' : 'bg-primary-100';
+            if (p === undefined) {
+              bgColor = 'bg-gray-200/75';
+              status = 'not-picked';
+            } else {
+              bgColor = 'bg-primary-100';
+              status = 'picked';
+            }
           }
 
           return (
@@ -70,6 +80,7 @@ export default function Progress() {
               <Button
                 onPress={() => setIndex(i)}
                 aria-label={formatOrdinals(i + 1) + ' question'}
+                data-status={status}
                 className={cn(
                   'h-5 min-w-5 rounded p-0',
                   index === i && 'border-3 border-primary-300',

@@ -51,7 +51,7 @@ export default function Home() {
   };
 
   return (
-    <div id="Home" className="m-10">
+    <div data-testid="Home" className="m-10">
       <h1 className="text-4xl font-bold">Home</h1>
       <p>Test your knowledge with some quick trivia!</p>
       <form
