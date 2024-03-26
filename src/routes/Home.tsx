@@ -51,12 +51,15 @@ export default function Home() {
   };
 
   return (
-    <div data-testid="Home" className="m-10">
-      <h1 className="text-4xl font-bold">Home</h1>
+    <div
+      data-testid="Home"
+      className="m-auto min-h-[500px] p-4 sm:min-w-[500px]"
+    >
+      <h1 className="mb-2 text-5xl font-bold tracking-tighter">Quiz</h1>
       <p>Test your knowledge with some quick trivia!</p>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex max-w-sm flex-col gap-2"
+        className="mt-8 flex max-w-lg flex-col gap-2"
       >
         <Controller
           name="questionCount"
@@ -131,18 +134,28 @@ export default function Home() {
             </Select>
           )}
         />
-        <Button
-          variant="ghost"
-          onPress={() => {
-            reset();
-            resetQuiz();
-          }}
-        >
-          Reset Form
-        </Button>
-        <Button variant="ghost" type="submit" color="primary">
-          Submit
-        </Button>
+        <div className="mt-4 flex flex-wrap gap-4">
+          <Button
+            variant="ghost"
+            size="lg"
+            onPress={() => {
+              reset();
+              resetQuiz();
+            }}
+            className="w-full sm:flex-1"
+          >
+            Reset Form
+          </Button>
+          <Button
+            variant="ghost"
+            size="lg"
+            type="submit"
+            color="primary"
+            className="w-full font-bold sm:flex-1"
+          >
+            Start
+          </Button>
+        </div>
       </form>
       <DevTool control={control} />
     </div>

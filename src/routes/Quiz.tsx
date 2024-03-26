@@ -1,5 +1,6 @@
 import { Icon } from '@iconify/react/dist/iconify.js';
 import { Button, ButtonGroup } from '@nextui-org/button';
+import { Spinner } from '@nextui-org/spinner';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -49,7 +50,7 @@ export default function Quiz() {
   return (
     <div
       data-testid="Quiz"
-      className="flex min-h-screen flex-col justify-between"
+      className="m-auto flex min-h-screen w-screen flex-col justify-between"
     >
       {quizErrMsg ? (
         errMsgDiv
@@ -119,7 +120,10 @@ export default function Quiz() {
           </div>
         </>
       ) : (
-        'Preparing some questions...'
+        <Spinner
+          label="Preparing your questions..."
+          classNames={{ base: 'm-auto' }}
+        />
       )}
     </div>
   );

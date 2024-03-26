@@ -13,6 +13,12 @@ export default function AnswerRadio({ answer, answerIndex, index }: Props) {
   const quiz = useMainStore((state) => state.quiz);
   const result = useMainStore((state) => state.result);
 
+  const focusVisibleHighlight = [
+    'data-[focus-visible=true]:outline',
+    'data-[focus-visible=true]:outline-offset-2',
+    'data-[focus-visible=true]:outline-primary-300',
+  ];
+
   const pressedHighlight = [
     'data-[pressed=true]:border-primary-300',
     'data-[pressed=true]:border-b-1',
@@ -42,6 +48,7 @@ export default function AnswerRadio({ answer, answerIndex, index }: Props) {
         base: cn(
           'group m-0 max-w-none rounded-xl border border-b-4 border-default px-4 py-8',
           'data-[disabled=true]:opacity-65',
+          focusVisibleHighlight,
           pressedHighlight,
           selectedHighlight,
           result && answer === quiz![index].correct_answer && correctHightlight,

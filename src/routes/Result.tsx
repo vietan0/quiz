@@ -1,4 +1,5 @@
 import { Button } from '@nextui-org/button';
+import { CircularProgress } from '@nextui-org/progress';
 import { useNavigate } from 'react-router-dom';
 
 import useMainStore from '../zustand/useMainStore';
@@ -12,33 +13,39 @@ export default function Result() {
   return (
     <div
       data-testid="Result"
-      className="flex min-h-screen flex-grow flex-col justify-center gap-10 px-4 py-16 text-center xs:px-8 sm:px-24 lg:px-48"
+      className="flex min-h-screen flex-grow flex-col justify-center gap-10 px-4 py-16 text-center xs:px-8 sm:px-24 lg:px-60"
     >
       {result && (
-        <>
-          <div>
-            <p className="text-3xl font-bold">{result.msgs.main}</p>
+        <div className="flex flex-col items-center justify-center gap-10">
+          <div className="flex-1">
+            <p className="text-4xl font-bold">{result.msgs.main}</p>
             <p className="text-lg">{result.msgs.sub}</p>
           </div>
-          <div>
-            <p className="text-xl font-bold">{result.percentage}%</p>
-            <p>
-              You got {result.correctCount} / {quiz!.length} questions right.
-            </p>
-          </div>
-        </>
+          <CircularProgress
+            aria-label="Loading..."
+            size="lg"
+            value={result.percentage}
+            showValueLabel={true}
+            label={`You got ${result.correctCount} / ${quiz!.length} questions right.`}
+            classNames={{
+              base: 'max-w-none flex-1',
+              svg: 'h-40 w-40',
+              value: 'text-4xl font-bold text-primary',
+            }}
+          />
+        </div>
       )}
-      <div className="flex justify-center gap-8">
+      <div className="flex flex-wrap justify-center gap-x-8 gap-y-4">
         <Button
           size="lg"
           color="primary"
           variant="ghost"
-          className="w-40 font-bold"
+          className="flex-grow font-bold sm:flex-1"
           onClick={() => {
             navigate('/quiz');
           }}
         >
-          Review Lesson
+          Review Your Answers
         </Button>
         <Button
           onPress={() => {
@@ -48,9 +55,9 @@ export default function Result() {
           size="lg"
           variant="ghost"
           color="success"
-          className="w-40 font-bold"
+          className="flex-grow font-bold sm:flex-1"
         >
-          Go Home
+          Play Again
         </Button>
       </div>
     </div>
