@@ -1,5 +1,6 @@
 import { Button } from '@nextui-org/button';
 import { CircularProgress } from '@nextui-org/progress';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import useMainStore from '../zustand/useMainStore';
@@ -9,6 +10,10 @@ export default function Result() {
   const quiz = useMainStore((state) => state.quiz);
   const resetQuiz = useMainStore((state) => state.resetQuiz);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (quiz === null) navigate('/');
+  }, [quiz, navigate]);
 
   return (
     <div

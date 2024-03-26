@@ -2,6 +2,7 @@ import { Icon } from '@iconify/react/dist/iconify.js';
 import { Button, ButtonGroup } from '@nextui-org/button';
 import { Spinner } from '@nextui-org/spinner';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import Progress from '../components/Progress';
@@ -22,6 +23,10 @@ export default function Quiz() {
   } = useMainStore();
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (quiz === null) navigate('/');
+  }, [quiz, navigate]);
 
   const variants = {
     enter: (direction: 1 | -1) => ({
