@@ -69,6 +69,7 @@ export default function Progress() {
             >
               <Button
                 onPress={() => setIndex(i)}
+                aria-label={formatOrdinals(i + 1) + ' question'}
                 className={cn(
                   'h-5 min-w-5 rounded p-0',
                   index === i && 'border-3 border-primary-300',
