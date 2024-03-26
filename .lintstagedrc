@@ -1,5 +1,4 @@
 {
   "*.{ts,tsx}": "npm run lint",
-  "**/*.{test,spec}.ts?(x)": "npm run test:once",
   "*": "npm run prettier"
 }

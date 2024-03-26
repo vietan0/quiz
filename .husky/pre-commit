@@ -1,2 +1,3 @@
 npx tsc
+npx vitest run
 npx lint-staged
