@@ -1,18 +1,13 @@
-import {
-  cleanup,
-  fireEvent,
-  render,
-  screen,
-  waitFor,
-} from '@testing-library/react';
+import { cleanup, render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 import { afterEach, expect, test, vi } from 'vitest';
 
 import fetchQuiz from '../api';
 import { quizFactory } from '../utils/factory';
-import useMainStore from '../zustand/useMainStore';
 import routes from '.';
 
+const user = userEvent.setup();
 vi.mock('../api');
 const mockFetchQuiz = vi.mocked(fetchQuiz);
 const fakeQuiz = quizFactory(2);
@@ -28,7 +23,7 @@ async function renderQuiz() {
   render(<RouterProvider router={testRouter} />);
 
   const submitBtn = screen.getByText('Submit');
-  fireEvent.submit(submitBtn);
+  await user.click(submitBtn);
   await waitFor(() => expect(fetchQuiz).toBeCalledTimes(1));
 
   expect(screen.getByTestId('motion.div')).toHaveAttribute(
@@ -52,18 +47,16 @@ test('Previous button should be disabled at index 0', async () => {
 
 test('Click Next should go to next question', async () => {
   const { nextBtn, getQuestionSpan } = await renderQuiz();
-  expect(useMainStore.getState()).toMatchObject({ index: 0, direction: 1 });
   expect(getQuestionSpan(0)).toBeInTheDocument();
-  fireEvent.click(nextBtn);
-  expect(useMainStore.getState()).toMatchObject({ index: 1, direction: 1 });
+  await user.click(nextBtn);
   expect(getQuestionSpan(1)).toBeInTheDocument();
 });
 
 test('Answers order should be intact after navigating a few times', async () => {
   const originAnswer = fakeQuiz[0].answers[0];
   const { prevBtn, nextBtn } = await renderQuiz();
-  fireEvent.click(nextBtn);
-  fireEvent.click(prevBtn);
+  await user.click(nextBtn);
+  await user.click(prevBtn);
   expect(fakeQuiz[0].answers[0]).toBe(originAnswer);
   // in other words, quizFactory/questionFactory/shuffleAnswers should not be called again
 });

@@ -5,6 +5,7 @@ import {
   screen,
   waitFor,
 } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 
@@ -14,6 +15,7 @@ import { quizFactory } from '../utils/factory';
 import shuffleAnswers from '../utils/shuffleAnswers';
 import routes from '.';
 
+const user = userEvent.setup();
 vi.mock('../api');
 const mockFetchQuiz = vi.mocked(fetchQuiz);
 
@@ -48,7 +50,7 @@ describe('When change questionCount input', () => {
 describe('When click Submit', () => {
   test('fetchQuiz returns data when URL is valid', async () => {
     mockFetchQuiz.mockResolvedValueOnce(quizFactory(1));
-    fireEvent.submit(screen.getByText('Submit'));
+    await user.click(screen.getByText('Submit'));
     await waitFor(() => expect(fetchQuiz).toBeCalledTimes(1));
 
     await waitFor(() =>
@@ -78,7 +80,7 @@ describe('When click Submit', () => {
     });
 
     const submitBtn = screen.getByText('Submit');
-    fireEvent.submit(submitBtn);
+    await user.click(submitBtn);
     await waitFor(() => expect(fetchQuiz).toBeCalledTimes(1));
 
     await waitFor(() =>
