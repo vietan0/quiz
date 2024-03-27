@@ -36,16 +36,16 @@ test('render quiz from start', () => {
   });
 
   // Previous & Submit button is disabled at index 0
-  const prevBtn = screen.getByRole('button', { name: /Previous/i });
-  const submitBtn = screen.getByRole('button', { name: /Submit/i });
+  const prevBtn = screen.getByText(/Previous/i);
+  const submitBtn = screen.getByText(/Submit/i);
   expect(prevBtn).toBeDisabled();
   expect(submitBtn).toBeDisabled();
 });
 
 test('When pick an answer', async () => {
   const answer1 = fakeQuiz[0].answers[0];
-  const radio1 = screen.getByRole('radio', { name: answer1 });
-  const firstQuesBtn = screen.getByRole('button', { name: /1st/ });
+  const radio1 = screen.getByText(answer1);
+  const firstQuesBtn = screen.getByLabelText(/1st/);
   expect(firstQuesBtn).toHaveAttribute('data-status', 'not-picked');
   await user.click(radio1);
   // State: picked is updated
@@ -55,9 +55,10 @@ test('When pick an answer', async () => {
 });
 
 test('When click Next/Prev', async () => {
-  const prevBtn = screen.getByRole('button', { name: /Previous/i });
-  const nextBtn = screen.getByRole('button', { name: /Next/i });
+  const prevBtn = screen.getByText(/Previous/i);
+  const nextBtn = screen.getByText(/Next/i);
   const getQuestionSpan = (i: number) => screen.getByText(fakeQuiz[i].question);
+
   // State: index, direction is updated
   // The correct question is rendered
   await user.click(nextBtn);
@@ -69,9 +70,10 @@ test('When click Next/Prev', async () => {
 });
 
 test('When click a Progress/QuizStatus button', async () => {
-  const firstQuesBtn = screen.getByRole('button', { name: /1st/ });
-  const thirdQuesBtn = screen.getByRole('button', { name: /3rd/ });
+  const firstQuesBtn = screen.getByLabelText(/1st/i);
+  const thirdQuesBtn = screen.getByLabelText(/3rd/i);
   const getQuestionSpan = (i: number) => screen.getByText(fakeQuiz[i].question);
+
   // State: index, direction is updated
   // The right question is rendered
   await user.click(thirdQuesBtn);
@@ -91,7 +93,7 @@ test('When click Submit', async () => {
     ],
   });
 
-  const submitBtn = screen.getByRole('button', { name: /Submit/i });
+  const submitBtn = screen.getByText(/Submit/i);
   await user.click(submitBtn);
   // State: result is not null
   expect(getState().result).not.toBeNull();
@@ -100,9 +102,9 @@ test('When click Submit', async () => {
 });
 
 test('When click Cancel quiz', async () => {
-  const cancelBtn = screen.getByRole('button', { name: 'Cancel quiz' });
+  const cancelBtn = screen.getByLabelText(/Cancel quiz/);
   await user.click(cancelBtn);
-  const confirmBtn = screen.getByRole('button', { name: 'Quit' });
+  const confirmBtn = screen.getByText(/Quit/);
   await user.click(confirmBtn);
 
   // State: is reset
