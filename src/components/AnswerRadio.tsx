@@ -47,7 +47,7 @@ export default function AnswerRadio({ answer, answerIndex, index }: Props) {
       classNames={{
         base: cn(
           'group m-0 max-w-none rounded-xl border border-b-4 border-default px-4 py-8',
-          'data-[disabled=true]:opacity-65',
+          'data-[disabled=true]:opacity-80',
           focusVisibleHighlight,
           pressedHighlight,
           selectedHighlight,
