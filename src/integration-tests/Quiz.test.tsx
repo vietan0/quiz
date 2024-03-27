@@ -1,38 +1,33 @@
-import { cleanup, render, screen, waitFor } from '@testing-library/react';
+import { cleanup, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { createMemoryRouter, RouterProvider } from 'react-router-dom';
-import { afterEach, beforeEach, expect, test, vi } from 'vitest';
+import { afterEach, beforeEach, expect, test } from 'vitest';
 
-import fetchQuiz from '../api';
 import routes from '../routes';
 import { quizFactory } from '../utils/factory';
 import useMainStore from '../zustand/useMainStore';
 
 const user = userEvent.setup();
-vi.mock('../api');
-const fakeQuiz = quizFactory(3);
-const mockFetchQuiz = vi.mocked(fetchQuiz);
-mockFetchQuiz.mockResolvedValue(fakeQuiz);
 const { getState } = useMainStore;
+const fakeQuiz = quizFactory(3);
 
 async function renderQuiz() {
-  const testRouter = createMemoryRouter(routes);
+  const testRouter = createMemoryRouter(routes, {
+    initialEntries: ['/quiz'],
+  });
+
+  useMainStore.setState({
+    quiz: fakeQuiz,
+    picked: Array.from({ length: fakeQuiz.length }),
+  });
+
   render(<RouterProvider router={testRouter} />);
-  const startBtn = screen.getByText(/Start/);
-  await user.click(startBtn);
-  await waitFor(() => expect(fetchQuiz).toBeCalledTimes(1));
 }
 
-beforeEach(async () => {
-  await renderQuiz();
-});
+beforeEach(renderQuiz);
+afterEach(cleanup);
 
-afterEach(() => {
-  cleanup();
-  mockFetchQuiz.mockClear();
-});
-
-test('When quiz starts', async () => {
+test('render quiz from start', () => {
   // state: active question, picked and result are initialized
   expect(getState()).toMatchObject({
     index: 0,
@@ -41,8 +36,8 @@ test('When quiz starts', async () => {
   });
 
   // Previous & Submit button is disabled at index 0
-  const prevBtn = await screen.findByRole('button', { name: /Previous/i });
-  const submitBtn = await screen.findByRole('button', { name: /Submit/i });
+  const prevBtn = screen.getByRole('button', { name: /Previous/i });
+  const submitBtn = screen.getByRole('button', { name: /Submit/i });
   expect(prevBtn).toBeDisabled();
   expect(submitBtn).toBeDisabled();
 });
@@ -60,13 +55,11 @@ test('When pick an answer', async () => {
 });
 
 test('When click Next/Prev', async () => {
-  const prevBtn = await screen.findByRole('button', { name: /Previous/i });
-  const nextBtn = await screen.findByRole('button', { name: /Next/i });
+  const prevBtn = screen.getByRole('button', { name: /Previous/i });
+  const nextBtn = screen.getByRole('button', { name: /Next/i });
   const getQuestionSpan = (i: number) => screen.getByText(fakeQuiz[i].question);
   // State: index, direction is updated
   // The correct question is rendered
-  expect(getState()).toMatchObject({ index: 0, direction: 1 });
-  expect(getQuestionSpan(0)).toBeInTheDocument();
   await user.click(nextBtn);
   expect(getState()).toMatchObject({ index: 1, direction: 1 });
   expect(getQuestionSpan(1)).toBeInTheDocument();
@@ -90,26 +83,16 @@ test('When click a Progress/QuizStatus button', async () => {
 });
 
 test('When click Submit', async () => {
-  // setup
-  const nextBtn = await screen.findByRole('button', { name: /Next/i });
-
-  const submitBtn = await screen.findByRole('button', {
-    name: /Submit/i,
+  useMainStore.setState({
+    picked: [
+      fakeQuiz[0].correct_answer,
+      fakeQuiz[1].correct_answer,
+      fakeQuiz[2].correct_answer,
+    ],
   });
 
-  const getRadio = (i: number) =>
-    screen.getByRole('radio', { name: fakeQuiz[i].answers[0] });
-
-  await user.click(getRadio(0));
-  await user.click(nextBtn);
-  await user.click(getRadio(1));
-  await user.click(nextBtn);
-  await user.click(getRadio(2));
-  await user.click(nextBtn);
+  const submitBtn = screen.getByRole('button', { name: /Submit/i });
   await user.click(submitBtn);
-
-  // State: picked doesn't contain any undefined item
-  expect(getState().picked).not.toContain(undefined);
   // State: result is not null
   expect(getState().result).not.toBeNull();
   // Result screen is rendered

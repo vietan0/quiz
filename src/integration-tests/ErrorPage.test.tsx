@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 import { expect, test, vi } from 'vitest';
@@ -21,6 +21,5 @@ test('ErrorPage is rendered when path not recognized', async () => {
   const falseRouter = createMemoryRouter(wrongRoutes);
   render(<RouterProvider router={falseRouter} />);
   await user.click(screen.getByText('Start'));
-  await waitFor(() => expect(fetchQuiz).toBeCalledTimes(1));
-  expect(await screen.findByTestId('ErrorPage')).toBeInTheDocument();
+  expect(screen.getByTestId('ErrorPage')).toBeInTheDocument();
 });

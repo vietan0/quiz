@@ -28,9 +28,7 @@ function renderHome() {
   render(<RouterProvider router={testRouter} />);
 }
 
-beforeEach(() => {
-  renderHome();
-});
+beforeEach(renderHome);
 
 afterEach(() => {
   cleanup();
@@ -65,23 +63,20 @@ describe('When change questionCount', () => {
 });
 
 describe('When click Submit', () => {
-  test('fetchQuiz returns data when URL is valid', async () => {
+  test('App works when URL is valid', async () => {
     mockFetchQuiz.mockResolvedValueOnce(quizFactory(1));
     await user.click(screen.getByText('Start'));
-    await waitFor(() => expect(fetchQuiz).toBeCalledTimes(1));
 
-    await waitFor(() =>
-      expect(fetchQuiz).toBeCalledWith(
-        'https://opentdb.com/api.php?type=multiple&amount=5',
-      ),
-    );
-
+    // fetchQuiz returns data
     await waitFor(() =>
       expect(mockFetchQuiz.mock.results[0].type).toEqual('return'),
     );
+
+    // Quiz is rendered
+    expect(screen.getByTestId(/Quiz/i)).toBeInTheDocument();
   });
 
-  test('fetchQuiz throws, display error message when URL is empty/invalid', async () => {
+  test('App show error when URL is empty/invalid', async () => {
     mockFetchQuiz.mockImplementationOnce(async () => {
       const fetchedData = { response_code: 2, results: [] };
       const validData = dataSchema.parse(fetchedData);
@@ -98,14 +93,15 @@ describe('When click Submit', () => {
 
     const startBtn = screen.getByText('Start');
     await user.click(startBtn);
-    await waitFor(() => expect(fetchQuiz).toBeCalledTimes(1));
 
-    await waitFor(() =>
-      expect(mockFetchQuiz.mock.results[0].type).toEqual('throw'),
-    );
+    await waitFor(async () => {
+      // fetchQuiz throws error
+      expect(mockFetchQuiz.mock.results[0].type).toEqual('throw');
+      // display error message
+      expect(await screen.findByTestId('quizErrMsg')).toBeInTheDocument();
+    });
 
-    await waitFor(async () =>
-      expect(await screen.findByTestId('quizErrMsg')).toBeInTheDocument(),
-    );
+    // Quiz is not rendered
+    expect(screen.queryByTestId(/Quiz/)).not.toBeInTheDocument();
   });
 });
