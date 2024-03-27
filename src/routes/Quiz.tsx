@@ -32,7 +32,10 @@ export default function Quiz() {
   };
 
   return (
-    <div
+    <motion.div
+      initial={{ scale: 0.85, opacity: 0 }}
+      animate={{ scale: 1, opacity: 1 }}
+      transition={{ type: 'spring', duration: 0.5 }}
       data-testid="Quiz"
       className="m-auto flex min-h-screen w-screen flex-col justify-between"
     >
@@ -107,6 +110,6 @@ export default function Quiz() {
           classNames={{ base: 'm-auto' }}
         />
       )}
-    </div>
+    </motion.div>
   );
 }

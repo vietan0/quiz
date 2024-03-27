@@ -3,6 +3,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@nextui-org/button';
 import { Input } from '@nextui-org/input';
 import { Select, SelectItem } from '@nextui-org/select';
+import { motion } from 'framer-motion';
 import { decode } from 'html-entities';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
@@ -52,8 +53,11 @@ export default function Home() {
   };
 
   return (
-    <div
+    <motion.div
       data-testid="Home"
+      initial={{ scale: 0.85, opacity: 0 }}
+      animate={{ scale: 1, opacity: 1 }}
+      transition={{ type: 'spring', duration: 0.5 }}
       className="m-auto min-h-[500px] p-4 sm:min-w-[500px]"
     >
       <h1 className="mb-2 text-5xl font-bold tracking-tighter">Quiz</h1>
@@ -165,6 +169,6 @@ export default function Home() {
         </div>
       )}
       <DevTool control={control} />
-    </div>
+    </motion.div>
   );
 }

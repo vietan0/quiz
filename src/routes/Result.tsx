@@ -1,5 +1,6 @@
 import { Button } from '@nextui-org/button';
 import { CircularProgress } from '@nextui-org/progress';
+import { motion } from 'framer-motion';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -16,7 +17,10 @@ export default function Result() {
   }, [quiz, navigate]);
 
   return (
-    <div
+    <motion.div
+      initial={{ scale: 0.85, opacity: 0 }}
+      animate={{ scale: 1, opacity: 1 }}
+      transition={{ type: 'spring', duration: 0.5 }}
       data-testid="Result"
       className="flex min-h-screen flex-grow flex-col justify-center gap-10 px-4 py-16 text-center xs:px-8 sm:px-24 lg:px-60"
     >
@@ -65,6 +69,6 @@ export default function Result() {
           Play Again
         </Button>
       </div>
-    </div>
+    </motion.div>
   );
 }
