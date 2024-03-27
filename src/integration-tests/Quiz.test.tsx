@@ -119,6 +119,8 @@ test('When click Submit', async () => {
 test('When click Cancel quiz', async () => {
   const cancelBtn = screen.getByRole('button', { name: 'Cancel quiz' });
   await user.click(cancelBtn);
+  const confirmBtn = screen.getByRole('button', { name: 'Quit' });
+  await user.click(confirmBtn);
 
   // State: is reset
   expect(getState()).toMatchObject({

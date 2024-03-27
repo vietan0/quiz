@@ -19,6 +19,7 @@
     "@hookform/resolvers": "^3.3.4",
     "@nextui-org/button": "^2.0.27",
     "@nextui-org/input": "^2.1.17",
+    "@nextui-org/modal": "^2.0.29",
     "@nextui-org/progress": "^2.0.25",
     "@nextui-org/radio": "^2.0.25",
     "@nextui-org/select": "^2.1.21",
