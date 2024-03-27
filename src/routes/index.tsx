@@ -8,7 +8,7 @@ export default [
   {
     path: '/',
     element: <App />,
-    errorElement: <ErrorPage />,
+    errorElement: <App error={<ErrorPage />} />,
     children: [
       { index: true, element: <Home /> },
       { path: '/quiz', element: <Quiz /> },
