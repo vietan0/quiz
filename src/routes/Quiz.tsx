@@ -1,6 +1,5 @@
 import { Icon } from '@iconify/react/dist/iconify.js';
 import { Button, ButtonGroup } from '@nextui-org/button';
-import { Spinner } from '@nextui-org/spinner';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -39,7 +38,7 @@ export default function Quiz() {
       data-testid="Quiz"
       className="m-auto flex min-h-screen w-screen flex-col justify-between"
     >
-      {quiz ? (
+      {quiz && (
         <>
           <Progress />
           <AnimatePresence mode="popLayout" custom={direction}>
@@ -78,7 +77,7 @@ export default function Quiz() {
                 variant="ghost"
                 size="lg"
                 className="w-40"
-                isDisabled={index === quiz.length - 1}
+                isDisabled={index === quiz!.length - 1}
                 onPress={() => moveIndex(1)}
                 endContent={
                   <Icon
@@ -104,11 +103,6 @@ export default function Quiz() {
             </Button>
           </div>
         </>
-      ) : (
-        <Spinner
-          label="Preparing your questions..."
-          classNames={{ base: 'm-auto' }}
-        />
       )}
     </motion.div>
   );

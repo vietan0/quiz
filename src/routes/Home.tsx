@@ -58,7 +58,7 @@ export default function Home() {
       initial={{ scale: 0.85, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
       transition={{ type: 'spring', duration: 0.5 }}
-      className="m-auto min-h-[500px] p-4 sm:min-w-[500px]"
+      className="m-auto min-h-[500px] w-full p-4 sm:max-w-lg"
     >
       <h1 className="mb-2 text-5xl font-bold tracking-tighter">Quiz</h1>
       <p>Test your knowledge with some quick trivia!</p>
@@ -148,6 +148,7 @@ export default function Home() {
               resetQuiz();
             }}
             className="w-full sm:flex-1"
+            isDisabled={formState.isSubmitting}
           >
             Reset Form
           </Button>
@@ -157,17 +158,18 @@ export default function Home() {
             type="submit"
             color="primary"
             className="w-full font-bold sm:flex-1"
+            isLoading={formState.isSubmitting}
           >
             Start
           </Button>
         </div>
+        {quizErrMsg && (
+          <div className="mt-2 text-small text-danger">
+            <p>Failure while getting quiz:</p>
+            <code data-testid="quizErrMsg">{quizErrMsg}</code>
+          </div>
+        )}
       </form>
-      {quizErrMsg && (
-        <div className="mt-2 text-right text-small text-danger">
-          <p>There has been an error while getting quiz:</p>
-          <pre data-testid="quizErrMsg">{quizErrMsg}</pre>
-        </div>
-      )}
       <DevTool control={control} />
     </motion.div>
   );
