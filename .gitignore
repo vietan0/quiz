@@ -24,4 +24,5 @@ dist-ssr
 *.sw?
 
 ignore
+coverage
 .wakatime-project
