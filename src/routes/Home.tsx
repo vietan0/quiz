@@ -37,8 +37,8 @@ export default function Home() {
     const validUrl = urlJoin(data);
 
     try {
-      navigate('/quiz');
       setQuiz(await fetchQuiz(validUrl));
+      navigate('/quiz');
     } catch (error) {
       if (error instanceof ZodError) {
         const validationError = fromZodError(error);
