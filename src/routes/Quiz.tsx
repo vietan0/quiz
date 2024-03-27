@@ -3,24 +3,15 @@ import { Button, ButtonGroup } from '@nextui-org/button';
 import { Spinner } from '@nextui-org/spinner';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import Progress from '../components/Progress';
 import QuestionScreen from '../components/QuestionScreen';
 import useMainStore from '../zustand/useMainStore';
 
 export default function Quiz() {
-  const {
-    quiz,
-    quizErrMsg,
-    resetQuiz,
-    index,
-    direction,
-    moveIndex,
-    picked,
-    result,
-    setResult,
-  } = useMainStore();
+  const { quiz, index, direction, moveIndex, picked, result, setResult } =
+    useMainStore();
 
   const navigate = useNavigate();
 
@@ -40,26 +31,12 @@ export default function Quiz() {
     }),
   };
 
-  const errMsgDiv = (
-    <div>
-      <p>There has been an error while getting quiz:</p>
-      <pre className="text-sm text-red-500" data-testid="quizErrMsg">
-        {quizErrMsg}
-      </pre>
-      <Link to="/" className="underline" onClick={resetQuiz}>
-        Go Home
-      </Link>
-    </div>
-  );
-
   return (
     <div
       data-testid="Quiz"
       className="m-auto flex min-h-screen w-screen flex-col justify-between"
     >
-      {quizErrMsg ? (
-        errMsgDiv
-      ) : quiz ? (
+      {quiz ? (
         <>
           <Progress />
           <AnimatePresence mode="popLayout" custom={direction}>

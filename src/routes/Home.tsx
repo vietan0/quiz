@@ -24,6 +24,7 @@ const defaultValues: Form = {
 export default function Home() {
   const setQuiz = useMainStore((state) => state.setQuiz);
   const resetQuiz = useMainStore((state) => state.resetQuiz);
+  const quizErrMsg = useMainStore((state) => state.quizErrMsg);
   const setquizErrMsg = useMainStore((state) => state.setquizErrMsg);
   const navigate = useNavigate();
 
@@ -157,6 +158,12 @@ export default function Home() {
           </Button>
         </div>
       </form>
+      {quizErrMsg && (
+        <div className="mt-2 text-right text-small text-danger">
+          <p>There has been an error while getting quiz:</p>
+          <pre data-testid="quizErrMsg">{quizErrMsg}</pre>
+        </div>
+      )}
       <DevTool control={control} />
     </div>
   );

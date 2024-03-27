@@ -81,7 +81,7 @@ describe('When click Submit', () => {
     );
   });
 
-  test('fetchQuiz throws when URL is empty/invalid', async () => {
+  test('fetchQuiz throws, display error message when URL is empty/invalid', async () => {
     mockFetchQuiz.mockImplementationOnce(async () => {
       const fetchedData = { response_code: 2, results: [] };
       const validData = dataSchema.parse(fetchedData);
@@ -102,6 +102,10 @@ describe('When click Submit', () => {
 
     await waitFor(() =>
       expect(mockFetchQuiz.mock.results[0].type).toEqual('throw'),
+    );
+
+    await waitFor(async () =>
+      expect(await screen.findByTestId('quizErrMsg')).toBeInTheDocument(),
     );
   });
 });
