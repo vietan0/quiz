@@ -60,7 +60,7 @@ export default function Home() {
       transition={{ type: 'spring', duration: 0.5 }}
       className="m-auto min-h-[500px] w-full p-4 sm:max-w-lg"
     >
-      <h1 className="mb-2 text-5xl font-bold tracking-tighter">Quiz</h1>
+      <p className="mb-2 text-5xl font-bold tracking-tighter">Quiz</p>
       <p>Test your knowledge with some quick trivia!</p>
       <form
         onSubmit={handleSubmit(onSubmit)}
