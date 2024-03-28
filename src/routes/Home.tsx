@@ -1,4 +1,3 @@
-import { DevTool } from '@hookform/devtools';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@nextui-org/button';
 import { Input } from '@nextui-org/input';
@@ -170,7 +169,6 @@ export default function Home() {
           </div>
         )}
       </form>
-      <DevTool control={control} />
     </motion.div>
   );
 }

@@ -1,4 +1,3 @@
-import { mountStoreDevtool } from 'simple-zustand-devtools';
 import { create } from 'zustand';
 
 import { createActiveQuestionSlice } from './createActiveQuestionSlice';
@@ -13,9 +12,5 @@ const useMainStore = create<AllSlices>()((...a) => ({
   ...createPickedSlice(...a),
   ...createResultSlice(...a),
 }));
-
-if (process.env.NODE_ENV === 'development') {
-  mountStoreDevtool('MainStore', useMainStore);
-}
 
 export default useMainStore;
